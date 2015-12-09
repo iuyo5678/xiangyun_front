@@ -225,6 +225,8 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
         })
         .then(function (resp) {
             // D3 code goes here.
+            $(svg_container).html("<svg xmlns='http://www.w3.org/2000/svg' width='100%'></svg>");
+
             var data = resp.aggregations.PV.buckets;
 
             var parseDate = d3.time.format("%m月%d日");
@@ -240,14 +242,15 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
             var start = data[0].date;
             var end = data[data.length - 1].date;
 
-            var margin = {top: 20, right: 80, bottom: 30, left: 80},
-                width = document.body.clientWidth - margin.left - margin.right,
+            var margin = {top: 20, right: 70, bottom: 30, left: 70},
+                width = $(svg_container).width(),
                 height = 500;
-            var container = d3.select(svg_container)
-                .append('svg')
+            var container = d3.select(svg_container).select('svg')
                 .attr('class', 'collect-svg')
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom);
+                .attr('width', width)
+                .attr('height', height);
+            width = width-margin.left - margin.right
+            height = height-margin.top- margin.bottom
             var svg = container.append('g')
                 .attr('class', 'content')
                 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -299,7 +302,7 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
 
             var x = d3.time.scale()
                 .domain([start, end])
-                .range([0, width - margin.left]);
+                .range([0, width]);
 
             var y = d3.scale.linear()
                 .domain([d3.min(data, function (d) {
