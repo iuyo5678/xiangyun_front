@@ -1,7 +1,6 @@
 <?php
 // Version
 define('VERSION', '0.0.9.9');
-
 // Configuration
 if (is_file('config.php')) {
 	require_once('config.php');
@@ -24,13 +23,12 @@ $config = new Config();
 $registry->set('config', $config);
 
 // Database
-$db = new DB(DB_DRIVER, DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+$db = new DB(DB_DRIVER, DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_PORT);
 $registry->set('db', $db);
 
 
 // Settings
 $query = $db->query("SELECT * FROM `" . DB_PREFIX . "setting` WHERE store_id = '0' OR store_id = '" . (int)$config->get('config_store_id') . "' ORDER BY store_id ASC");
-
 foreach ($query->rows as $result) {
     if (!$result['serialized']) {
         $config->set($result['key'], $result['value']);
