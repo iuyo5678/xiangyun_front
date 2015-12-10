@@ -168,7 +168,7 @@ function build_query(start, end, query_str, interval) {
             }
         },
         "aggs": {
-            "PV": {
+            "statistics": {
                 "date_histogram": {
                     "field": "@timestamp",
                     "interval": interval,
@@ -179,13 +179,22 @@ function build_query(start, end, query_str, interval) {
                         "max": end
                     }
                 },
-                'aggs': {
+                "aggs": {
+                    "PV": {
+                        "sum": {
+                            "script": "doc['disp_statistics.wz_weixiusimple'].value + doc['disp_statistics.wz_weixiuweak'].value + doc['disp_statistics.wz_banjiasimple'].value + doc['disp_statistics.wz_banjiaweak'].value + doc['disp_statistics.wz_baojiesimple'].value + doc['disp_statistics.wz_baojieweak'].value + doc['disp_statistics.wz_pinpai'].value + doc['disp_statistics.wz_bdoor'].value + doc['disp_statistics.wz_hy_multi'].value"
+                        }
+                    },
+                    "Click": {
+                        "sum": {
+                            "script": "doc['clk_statistics.wz_weixiusimple'].value + doc['clk_statistics.wz_weixiuweak'].value + doc['clk_statistics.wz_banjiasimple'].value + doc['clk_statistics.wz_baojiesimple'].value + doc['clk_statistics.wz_baojieweak'].value + doc['clk_statistics.wz_pinpai'].value + doc['clk_statistics.wz_bdoor'].value + doc['clk_statistics.wz_hy_multi'].value"
+                        }
+                    },
                     "UV": {
                         "cardinality": {
                             "field": "baiduid"
                         }
                     }
-
                 }
             }
         }
@@ -211,8 +220,8 @@ var zh = d3.locale({
 });
 
 function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qurey) {
-    start_day = start_day || -17;
-    end_day = end_day || -2;
+    start_day = start_day || -40;
+    end_day = end_day || -38;
     var elc_client = new elasticsearch.Client({hosts: data_server});
     var start_time_stamp = DateAdd("d ", start_day, setStartDay(new Date())).getTime();
     var end_time_stamp = DateAdd("d ", end_day, setEndDay(new Date())).getTime();
@@ -227,15 +236,15 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
             // D3 code goes here.
             $(svg_container).html("<svg xmlns='http://www.w3.org/2000/svg' width='100%'></svg>");
 
-            var data = resp.aggregations.PV.buckets;
+            var data = resp.aggregations.statistics.buckets;
 
             var parseDate = d3.time.format("%m月%d日");
             data.forEach(function (d) {
-                d.title = "pv";
                 d.date = new Date(d.key_as_string);
                 d.日期 = format(d.date);
-                d.pv = d.doc_count;
-                d.uv = d.UV.value
+                d.pv = d.PV.value;
+                d.uv = d.UV.value;
+                d.click = d.Click.value
             });
 
             console.log(data);

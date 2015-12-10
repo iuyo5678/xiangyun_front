@@ -12,6 +12,6 @@
 </div>
 <script>
     $(document).ready(function () {
-        draw_pv_uv_svg(-17, -2, "#collect-visul", "#collect-table-tab", '*');
+        draw_pv_uv_svg(-40, -38, "#collect-visul", "#collect-table-tab", '*');
     });
 </script>
