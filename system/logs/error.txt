@@ -1746,3 +1746,6 @@
 2015-12-08 15:42:06 - PHP Notice:  Undefined variable: content_top in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/clean.tpl on line 12
 2015-12-08 15:42:06 - PHP Notice:  Undefined variable: content_bottom in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/clean.tpl on line 13
 2015-12-08 15:42:06 - PHP Notice:  Undefined variable: column_right in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/clean.tpl on line 15
+2015-12-09 9:18:06 - PHP Warning:  unlink(/Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/cache/cache.language.1449137504): Permission denied in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/cache/file.php on line 17
+2015-12-09 9:18:17 - PHP Warning:  unlink(/Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/cache/cache.language.1449137504): Permission denied in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/cache/file.php on line 17
+2015-12-09 9:18:31 - PHP Warning:  unlink(/Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/cache/cache.language.1449137504): Permission denied in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/cache/file.php on line 17

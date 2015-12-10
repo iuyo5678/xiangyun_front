@@ -140,7 +140,6 @@ function setStartDay(date) {
 
 function build_query(start, end, query_str, interval) {
     query_str = query_str || '*';
-    interval = interval || '24h';
     var query = {
         "query": {
             "filtered": {
@@ -218,19 +217,46 @@ var zh = d3.locale({
     months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
     shortMonths: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
 });
+var interval_format = {
+    "d": d3.time.format("%Y年%m月%d日"),
+    "h": d3.time.format("%d日%H时"),
+    "M": d3.time.format("%H时%M分")
+};
+Date.prototype.Format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "H+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
 
-function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qurey) {
-    start_day = start_day || -40;
-    end_day = end_day || -38;
+function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qurey, interval) {
+    var start_time_stamp = start_day || DateAdd("d ", -17, setStartDay(new Date())).getTime();
+    var end_time_stamp = end_day || DateAdd("d ", -2, setEndDay(new Date())).getTime();
+    interval = interval || '24h';
+    var format = interval_format.h;
+    if (interval == "24h") {
+        format = interval_format.d
+    }
+    if (interval[interval.length-1] == "M")
+    {
+        format = interval_format.M
+    }
     var elc_client = new elasticsearch.Client({hosts: data_server});
-    var start_time_stamp = DateAdd("d ", start_day, setStartDay(new Date())).getTime();
-    var end_time_stamp = DateAdd("d ", end_day, setEndDay(new Date())).getTime();
-    var format = d3.time.format("%Y-%m-%d");
 
     esp = elc_client.search({
             size: 5,
             index: "logstash-search-*",
-            body: build_query(start_time_stamp, end_time_stamp, qurey)
+            body: build_query(start_time_stamp, end_time_stamp, qurey, interval)
         })
         .then(function (resp) {
             // D3 code goes here.
@@ -238,7 +264,6 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
 
             var data = resp.aggregations.statistics.buckets;
 
-            var parseDate = d3.time.format("%m月%d日");
             data.forEach(function (d) {
                 d.date = new Date(d.key_as_string);
                 d.日期 = format(d.date);
@@ -247,7 +272,6 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
                 d.click = d.Click.value
             });
 
-            console.log(data);
             var start = data[0].date;
             var end = data[data.length - 1].date;
 
@@ -315,16 +339,16 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
 
             var y = d3.scale.linear()
                 .domain([d3.min(data, function (d) {
-                    return Math.min(d.pv, d.uv);
+                    return Math.min(d.pv, d.uv, d.click);
                 }),
                     d3.max(data, function (d) {
-                        return Math.max(d.pv, d.uv);
+                        return Math.max(d.pv, d.uv, d.click);
                     })])
                 .range([height, 0]);
 
             var xAxis = d3.svg.axis()
                 .scale(x)
-                .tickFormat(zh.timeFormat("%m月%d日"))
+                .tickFormat(format)
                 .orient('bottom')
                 .ticks(10);
 
@@ -367,14 +391,22 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
                     return y(d.uv);
                 });
 
+            var line_click = d3.svg.line()
+                .x(function (d) {
+                    return x(d.date);
+                })
+                .y(function (d) {
+                    return y(d.click);
+                });
+
             x.domain(d3.extent(data, function (d) {
                 return d.date;
             }));
             y.domain([d3.min(data, function (d) {
-                return Math.min(d.pv, d.uv);
+                return Math.min(d.pv, d.uv, d.click);
             }),
                 d3.max(data, function (d) {
-                    return Math.max(d.pv, d.uv);
+                    return Math.max(d.pv, d.uv, d.click);
                 })]);
 
             var pv_line = svg.append("path")
@@ -387,8 +419,15 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
                 .attr("class", "line-uv")
                 .attr("d", line_uv);
 
+            var click_line = svg.append("path")
+                .datum(data)
+                .attr("class", "line-click")
+                .attr("d", line_click);
+
             svg.append('g').attr('class', 'line-pv-tips');
             svg.append('g').attr('class', 'line-uv-tips');
+            svg.append('g').attr('class', 'line-click-tips');
+
             var g = svg.select('.line-pv-tips').selectAll('circle')
                 .data(data)
                 .enter()
@@ -404,6 +443,7 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
                 .on('mouseout', function () {
                     d3.select(this).transition().duration(500).attr('r', 3.5);
                 });
+
             var g = svg.select('.line-uv-tips').selectAll('circle')
                 .data(data)
                 .enter()
@@ -412,6 +452,22 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
                 .attr('class', 'linecircle')
                 .attr('cx', line_uv.x())
                 .attr('cy', line_uv.y())
+                .attr('r', 3.5)
+                .on('mouseover', function () {
+                    d3.select(this).transition().duration(500).attr('r', 5);
+                })
+                .on('mouseout', function () {
+                    d3.select(this).transition().duration(500).attr('r', 3.5);
+                });
+
+            var g = svg.select('.line-click-tips').selectAll('circle')
+                .data(data)
+                .enter()
+                .append('g')
+                .append('circle')
+                .attr('class', 'linecircle')
+                .attr('cx', line_click.x())
+                .attr('cy', line_click.y())
                 .attr('r', 3.5)
                 .on('mouseover', function () {
                     d3.select(this).transition().duration(500).attr('r', 5);
@@ -456,7 +512,7 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
                         d = x0 - d0.date > d1.date - x0 ? d1 : d0;
 
                     function formatWording(d) {
-                        return '日期：' + d3.time.format('%Y-%m-%d')(d.date);
+                        return '日期：' + format(d.date);
                     }
 
                     wording1.text(formatWording(d));
@@ -481,6 +537,7 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
                 .on('mouseout', function () {
                     d3.select('.tips').style('display', 'none');
                 });
+
             uv_line
                 .on('mousemove', function () {
                     var m = d3.mouse(this),
@@ -496,7 +553,7 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
                         d = x0 - d0.date > d1.date - x0 ? d1 : d0;
 
                     function formatWording(d) {
-                        return '日期：' + d3.time.format('%Y-%m-%d')(d.date);
+                        return '日期：' + format(d.date);
                     }
 
                     wording1.text(formatWording(d));
@@ -504,6 +561,47 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
 
                     var x1 = x(d.date),
                         y1 = y(d.uv);
+
+                    // 处理超出边界的情况
+                    var dx = x1 > width ? x1 - width + 200 : x1 + 200 > width ? 200 : 0;
+
+                    var dy = y1 > height ? y1 - height + 50 : y1 + 50 > height ? 50 : 0;
+
+                    x1 -= dx;
+                    y1 -= dy;
+
+                    d3.select('.tips')
+                        .attr('transform', 'translate(' + x1 + ',' + y1 + ')');
+
+                    d3.select('.tips').style('display', 'block');
+                })
+                .on('mouseout', function () {
+                    d3.select('.tips').style('display', 'none');
+                });
+
+            click_line
+                .on('mousemove', function () {
+                    var m = d3.mouse(this),
+                        cx = m[0] - margin.left;
+
+                    var x0 = x.invert(cx);
+                    var i = (d3.bisector(function (d) {
+                        return d.date;
+                    }).left)(data, x0, 1);
+
+                    var d0 = data[i],
+                        d1 = data[i] || {},
+                        d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+
+                    function formatWording(d) {
+                        return '日期：' + format(d.date);
+                    }
+
+                    wording1.text(formatWording(d));
+                    wording2.text("click" + '：' + d.click);
+
+                    var x1 = x(d.date),
+                        y1 = y(d.click);
 
                     // 处理超出边界的情况
                     var dx = x1 > width ? x1 - width + 200 : x1 + 200 > width ? 200 : 0;

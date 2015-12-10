@@ -29,8 +29,10 @@
     <link href="view/js/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <script src="view/js/d3/d3.min.js" type="text/javascript"></script>
     <script src="view/js/elasticsearch-js/elasticsearch.js" type="text/javascript"></script>
-    <script src="view/js/html2csv.js" type="text/javascript"></script>
+    <script src="view/js/moment.js" type="text/javascript"></script>
+    <script src="view/js/daterangepicker.js" type="text/javascript"></script>
     <link href="view/css/main.css" rel="stylesheet">
+    <link href="view/css/daterangepicker-bs3.css" rel="stylesheet">
     <script src="view/js/common.js" type="text/javascript"></script>
     <?php foreach ($styles as $style) { ?>
     <link href="<?php echo $style['href']; ?>" type="text/css" rel="<?php echo $style['rel']; ?>" media="<?php echo $style['media']; ?>" />
