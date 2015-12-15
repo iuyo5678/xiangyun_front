@@ -282,6 +282,7 @@ select{
 footer {
     margin-top: 50px;
     background-color: #0b0b0b;
+    color: #ffffff;
     clear: both;
     position: relative;
     z-index: 10;
