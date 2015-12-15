@@ -94,6 +94,28 @@ body > #container { height: auto; min-height: 100%; }
 body {
     background: #f0f0f0
 }
+.container{
+    min-height:500px;
+}
+.input-label {
+    width: 35%;
+    padding-left: 0;
+    padding-right: 0;
+}
+.input-value {
+    width: 65%;
+    padding-right: 0;
+    padding-left: 0;
+}
+.input-form{
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+}
+button{
+    background-color: #9acfea;
+    border: none;
+}
 
 .statistics-container {
     margin-top: 15px;
@@ -256,15 +278,17 @@ select{
 
 
 /*页脚部分*/
-#content { padding-bottom: 3em; }
+
 footer {
+    margin-top: 50px;
+    background-color: #0b0b0b;
     clear: both;
     position: relative;
     z-index: 10;
-    height: 3em;
-    margin-top: -3em;
+    height: 80px;
+    padding-top: 5px;
+    padding-bottom: 10px;
 }
-#content { padding-bottom: 3em; }
 
 
 /* ==========================================================================

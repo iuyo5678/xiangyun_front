@@ -155,7 +155,7 @@ function build_pv_uv_query(start, end, query_str, interval, cards) {
     return query;
 }
 
-function build_city_query(start, end, query_str, size, cards) {
+function build_term_query(start, end, query_str, size, cards, term) {
     query_str = query_str || '*';
     size = size || 5;
 
@@ -199,7 +199,7 @@ function build_city_query(start, end, query_str, size, cards) {
         "aggs": {
             "statistics": {
                 "terms": {
-                    "field": 'city',
+                    "field": term,
                     "size": size,
                     "order": {
                         "_count":"desc"
@@ -212,3 +212,60 @@ function build_city_query(start, end, query_str, size, cards) {
 }
 
 
+function build_click_query(start, end, query_str, interval, cards) {
+    query_str = query_str || '*';
+
+    if ( query != "*" && cards.length > 0 ){
+        query_str += " AND  (";
+    }
+
+    for (var i=0; i<cards.length;i++)
+    {
+        query_str += "_exists_: disp_statistics." + cards[i] +" OR "
+    }
+
+    query_str = query_str.substring(0, query_str.length-4) + ')';
+
+    var query = {
+        "query": {
+            "filtered": {
+                "query": {
+                    "query_string": {
+                        "analyze_wildcard": true,
+                        "query": query_str
+                    }
+                },
+                "filter": {
+                    "bool": {
+                        "must": [
+                            {
+                                "range": {
+                                    "@timestamp": {
+                                        "gte": start,
+                                        "lte": end
+                                    }
+                                }
+                            }
+                        ],
+                        "must_not": []
+                    }
+                }
+            }
+        },
+        "aggs": {
+            "statistics": {
+                "date_histogram": {
+                    "field": "@timestamp",
+                    "interval": interval,
+                    "time_zone": "Asia/Shanghai",
+                    "min_doc_count": 0,
+                    "extended_bounds": {
+                        "min": start,
+                        "max": end
+                    }
+                }
+            }
+        }
+    };
+    return query;
+}
