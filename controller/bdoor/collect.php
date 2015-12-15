@@ -7,7 +7,7 @@
  */
 class ControllerBdoorCollect extends Controller {
     public function index() {
-        $this->document->setTitle("");
+        $this->document->setTitle("订单分发-汇总统计");
 
         $data['breadcrumbs'] = array();
 

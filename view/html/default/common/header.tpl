@@ -31,6 +31,10 @@
     <script src="view/js/elasticsearch-js/elasticsearch.js" type="text/javascript"></script>
     <script src="view/js/moment.js" type="text/javascript"></script>
     <script src="view/js/daterangepicker.js" type="text/javascript"></script>
+    <script src="view/js/query.js" type="text/javascript"></script>
+    <!-- ECharts单文件引入 -->
+    <script src="http://echarts.baidu.com/doc/example/www2/js/echarts-all.js"></script>
+
     <link href="view/css/main.css" rel="stylesheet">
     <link href="view/css/daterangepicker-bs3.css" rel="stylesheet">
     <script src="view/js/common.js" type="text/javascript"></script>
@@ -66,7 +70,6 @@
                     <ul class="dropdown-menu">
                         <li><a href="<?php echo $bdoor_collect; ?>">汇总</a></li>
                         <li><a href="<?php echo $bdoor_massage; ?>">按摩</a></li>
-                        <li><a href="<?php echo $bdoor_carwash; ?>">洗车</a></li>
                         <li><a href="<?php echo $bdoor_nail; ?>">美甲</a></li>
                         <li><a href="<?php echo $bdoor_peccancy; ?>">违章</a></li>
                     </ul>

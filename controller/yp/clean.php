@@ -8,7 +8,7 @@
 class ControllerYpClean extends Controller {
     public function index() {
 
-        $this->document->setTitle("");
+        $this->document->setTitle("黄页保洁PV UV 点击统计");
 
         $data['breadcrumbs'] = array();
 

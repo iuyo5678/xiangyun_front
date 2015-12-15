@@ -1,5 +1,5 @@
 <div class="statistics-container">
-    <h3>PV UV 统计</h3>
+    <h3>PV UV 点击汇总统计</h3>
     <p class="description ">目前所有卡片在搜索结果下的Pv Uv 点击量数据,包含黄页,维修等</p>
     <div id="content-top">
         <div class="option-container">
@@ -29,6 +29,7 @@
     </div>
     <script>
         $(document).ready(function () {
+            all_cards = ['wz_weixiusimple', 'wz_weixiuweak', 'wz_banjiasimple', 'wz_banjiaweak', 'wz_baojiesimple', 'wz_baojieweak', 'wz_pinpai', 'wz_peccancy', 'wz_bdoor', 'wz_hy_multi'];
             var start_time = DateAdd("d ", -17, setStartDay(new Date()));
             var end_time= DateAdd("d ", -2, setEndDay(new Date()));
             var checkValue = $("#collect-interval").val();
@@ -51,8 +52,12 @@
                         draw_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue);
                     }
             );
-            draw_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue);
-
+            draw_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue, all_cards);
+            draw_map_data(start_time, end_time, "map_container", "*", 50, all_cards);
         });
     </script>
+</div>
+
+<div class="statistics-container">
+    <div id="map_container" style="height:400px"></div>
 </div>

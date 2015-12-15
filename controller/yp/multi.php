@@ -7,9 +7,8 @@
  */
 class ControllerYpMulti extends Controller {
     public function index() {
-        $this->load->language('account/success');
 
-        $this->document->setTitle($this->language->get('heading_title'));
+        $this->document->setTitle("黄页多类目PV UV 点击统计");
 
         $data['breadcrumbs'] = array();
 

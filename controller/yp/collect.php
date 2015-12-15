@@ -7,7 +7,7 @@
  */
 class ControllerYpCollect extends Controller {
     public function index() {
-        $this->document->setTitle("");
+        $this->document->setTitle("黄页汇总数据");
 
         $data['breadcrumbs'] = array();
 

@@ -8,7 +8,7 @@
 class ControllerYpMove extends Controller {
     public function index() {
 
-        $this->document->setTitle("");
+        $this->document->setTitle("黄页搬家PV UV 点击统计");
 
         $data['breadcrumbs'] = array();
 

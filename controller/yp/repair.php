@@ -8,7 +8,7 @@
 class ControllerYpRepair extends Controller {
     public function index() {
 
-        $this->document->setTitle("");
+        $this->document->setTitle("黄页维修PV UV 点击统计");
 
         $data['breadcrumbs'] = array();
 

@@ -138,68 +138,6 @@ function setStartDay(date) {
     return date;
 }
 
-function build_query(start, end, query_str, interval) {
-    query_str = query_str || '*';
-    var query = {
-        "query": {
-            "filtered": {
-                "query": {
-                    "query_string": {
-                        "analyze_wildcard": true,
-                        "query": query_str
-                    }
-                },
-                "filter": {
-                    "bool": {
-                        "must": [
-                            {
-                                "range": {
-                                    "@timestamp": {
-                                        "gte": start,
-                                        "lte": end
-                                    }
-                                }
-                            }
-                        ],
-                        "must_not": []
-                    }
-                }
-            }
-        },
-        "aggs": {
-            "statistics": {
-                "date_histogram": {
-                    "field": "@timestamp",
-                    "interval": interval,
-                    "time_zone": "Asia/Shanghai",
-                    "min_doc_count": 0,
-                    "extended_bounds": {
-                        "min": start,
-                        "max": end
-                    }
-                },
-                "aggs": {
-                    "PV": {
-                        "sum": {
-                            "script": "doc['disp_statistics.wz_weixiusimple'].value + doc['disp_statistics.wz_weixiuweak'].value + doc['disp_statistics.wz_banjiasimple'].value + doc['disp_statistics.wz_banjiaweak'].value + doc['disp_statistics.wz_baojiesimple'].value + doc['disp_statistics.wz_baojieweak'].value + doc['disp_statistics.wz_pinpai'].value + doc['disp_statistics.wz_bdoor'].value + doc['disp_statistics.wz_hy_multi'].value"
-                        }
-                    },
-                    "Click": {
-                        "sum": {
-                            "script": "doc['clk_statistics.wz_weixiusimple'].value + doc['clk_statistics.wz_weixiuweak'].value + doc['clk_statistics.wz_banjiasimple'].value + doc['clk_statistics.wz_baojiesimple'].value + doc['clk_statistics.wz_baojieweak'].value + doc['clk_statistics.wz_pinpai'].value + doc['clk_statistics.wz_bdoor'].value + doc['clk_statistics.wz_hy_multi'].value"
-                        }
-                    },
-                    "UV": {
-                        "cardinality": {
-                            "field": "baiduid"
-                        }
-                    }
-                }
-            }
-        }
-    };
-    return query;
-}
 
 var data_server = ['http://yf-wise-gate44.yf01.baidu.com:8200', 'http://yf-wise-gate46.yf01.baidu.com:8200', 'http://yf-wise-gate47.yf01.baidu.com:8200'];
 
@@ -239,7 +177,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
     return fmt;
 }
 
-function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qurey, interval) {
+function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qurey, interval, cards) {
     var start_time_stamp = start_day || DateAdd("d ", -17, setStartDay(new Date())).getTime();
     var end_time_stamp = end_day || DateAdd("d ", -2, setEndDay(new Date())).getTime();
     interval = interval || '24h';
@@ -247,8 +185,7 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
     if (interval == "24h") {
         format = interval_format.d
     }
-    if (interval[interval.length-1] == "M")
-    {
+    if (interval[interval.length - 1] == "M") {
         format = interval_format.M
     }
     var elc_client = new elasticsearch.Client({hosts: data_server});
@@ -256,7 +193,7 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
     esp = elc_client.search({
             size: 5,
             index: "logstash-search-*",
-            body: build_query(start_time_stamp, end_time_stamp, qurey, interval)
+            body: build_pv_uv_query(start_time_stamp, end_time_stamp, qurey, interval, cards)
         })
         .then(function (resp) {
             // D3 code goes here.
@@ -282,8 +219,8 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
                 .attr('class', 'collect-svg')
                 .attr('width', width)
                 .attr('height', height);
-            width = width-margin.left - margin.right
-            height = height-margin.top- margin.bottom
+            width = width - margin.left - margin.right;
+            height = height - margin.top - margin.bottom;
             var svg = container.append('g')
                 .attr('class', 'content')
                 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -331,7 +268,7 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
                 return table;
             };
 
-            var peopleTable = tabulate(data, ["日期", "pv", 'uv']);
+            var peopleTable = tabulate(data, ["日期", "pv", 'uv', 'click']);
 
             var x = d3.time.scale()
                 .domain([start, end])
@@ -622,6 +559,94 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, qure
 
         });
 
+}
+
+
+function draw_map_data(start_day, end_day, map_container, qurey, size, cards) {
+    var start_time_stamp = start_day || DateAdd("d ", -17, setStartDay(new Date())).getTime();
+    var end_time_stamp = end_day || DateAdd("d ", -2, setEndDay(new Date())).getTime();
+
+    var elc_client = new elasticsearch.Client({hosts: data_server});
+
+    esp = elc_client.search({
+            size: size,
+            index: "logstash-search-*",
+            body: build_city_query(start_time_stamp, end_time_stamp, qurey, size, cards)
+        })
+        .then(function (resp) {
+            // D3 code goes here.
+
+            var data = resp.aggregations.statistics.buckets;
+
+            data.forEach(function (d) {
+                if (d.key != "None"){
+                    d.name = d.key;
+                    d.value = d.doc_count;
+                } else {
+
+                }
+            });
+
+            var map_chart = echarts.init(document.getElementById(map_container));
+            map_chart.setOption(
+                {
+                    title: {
+                        text: '地域分布',
+                        x: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        data: ['城市']
+                    },
+                    dataRange: {
+                        min: 0,
+                        max: 1000000,
+                        x: 'left',
+                        y: 'bottom',
+                        text: ['高', '低'],           // 文本，默认为数值文本
+                        calculable: true
+                    },
+                    toolbox: {
+                        show: true,
+                        orient: 'vertical',
+                        x: 'right',
+                        y: 'center',
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    roamController: {
+                        show: true,
+                        x: 'right',
+                        mapTypeControl: {
+                            'china': true
+                        }
+                    },
+                    series: [
+                        {
+                            name: '城市',
+                            type: 'map',
+                            mapType: 'china',
+                            roam: false,
+                            itemStyle: {
+                                normal: {label: {show: true}},
+                                emphasis: {label: {show: true}}
+                            },
+                            data: data
+                        }
+                    ]
+                }
+            )
+
+            return data
+        });
 }
 
 

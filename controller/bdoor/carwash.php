@@ -8,7 +8,7 @@
 class ControllerBdoorCarwash extends Controller {
     public function index() {
 
-        $this->document->setTitle("");
+        $this->document->setTitle("订单分发-洗车统计");
 
         $data['breadcrumbs'] = array();
 

@@ -8,7 +8,7 @@
 class ControllerBdoorMassage extends Controller {
     public function index() {
 
-        $this->document->setTitle("");
+        $this->document->setTitle("订单分发-按摩统计");
 
         $data['breadcrumbs'] = array();
 

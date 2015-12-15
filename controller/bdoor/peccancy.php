@@ -7,7 +7,7 @@
  */
 class ControllerBdoorPeccancy extends Controller {
     public function index() {
-        $this->document->setTitle("");
+        $this->document->setTitle("订单分发-违章缴费统计");
 
         $data['breadcrumbs'] = array();
 

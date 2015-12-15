@@ -40,7 +40,7 @@ class ControllerCommonHeader extends Controller {
 		$data['bdoor_nail'] = $this->url->link('bdoor/nail');
 		$data['bdoor_massage'] = $this->url->link('bdoor/massage');
 		$data['bdoor_peccancy'] = $this->url->link('bdoor/peccancy');
-		$data['bdoor_carwash'] = $this->url->link('bdoor/carwash');
+		//$data['bdoor_carwash'] = $this->url->link('bdoor/carwash');
 
 		$data['payment_collect'] = $this->url->link('payment/collect');
 		$data['payment_telecom'] = $this->url->link('payment/telecom');
