@@ -6,6 +6,7 @@ if (is_file('config.php')) {
 	require_once('config.php');
 }
 
+require_once(DIR_APPLICATION . "vendor/autoload.php");
 
 // Startup
 require_once(DIR_SYSTEM . 'startup.php');
@@ -44,6 +45,9 @@ $registry->set('url', $url);
 // Log
 $log = new Log($config->get('config_error_filename'));
 $registry->set('log', $log);
+
+$redis = new Redis($config->get('redis_config'));
+$redis->set('key','value', 100,'s');
 
 function error_handler($errno, $errstr, $errfile, $errline) {
 	global $log, $config;
