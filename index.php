@@ -46,8 +46,8 @@ $registry->set('url', $url);
 $log = new Log($config->get('config_error_filename'));
 $registry->set('log', $log);
 
-$redis = new Redis($config->get('redis_config'));
-$redis->set('key','value', 100,'s');
+$redis = new XiangyunRedis($config->get('redis_config'));
+$registry->set('redis', $redis);
 
 function error_handler($errno, $errstr, $errfile, $errline) {
 	global $log, $config;

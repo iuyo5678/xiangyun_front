@@ -1852,3 +1852,33 @@
 2015-12-14 9:21:16 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/peccancy.tpl on line 4
 2015-12-14 10:05:15 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/peccancy.tpl on line 4
 2015-12-14 10:07:19 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/peccancy.tpl on line 4
+2015-12-15 9:00:09 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-15 9:01:24 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/repair.tpl on line 4
+2015-12-15 9:03:43 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/repair.tpl on line 4
+2015-12-15 9:03:58 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/repair.tpl on line 4
+2015-12-15 9:04:26 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/repair.tpl on line 4
+2015-12-15 9:04:44 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/collect.tpl on line 4
+2015-12-16 9:32:29 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-16 9:33:01 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-16 9:33:19 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-16 9:33:55 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-16 9:36:28 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-16 9:37:25 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-16 9:57:33 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-16 9:57:46 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-16 9:58:27 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-16 9:58:49 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-16 10:04:06 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:14:01 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:15:00 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:22:42 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:28:04 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:30:00 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:32:12 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:33:44 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:35:13 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:39:06 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:40:35 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-16 10:56:28 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
+2015-12-22 11:38:44 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/collect.tpl on line 4
+2015-12-22 11:38:49 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4

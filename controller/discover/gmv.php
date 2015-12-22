@@ -5,7 +5,7 @@
  * Date: 15/12/4
  * Time: 下午5:00
  */
-class ControllerDiscoverCollect extends Controller {
+class ControllerDiscoverGmv extends Controller {
     public function index() {
         $this->document->setTitle("探索数据");
 
@@ -25,10 +25,10 @@ class ControllerDiscoverCollect extends Controller {
 
         $data['footer'] = $this->load->controller('common/footer');
 
-        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/discover/collect.tpl')) {
-            $this->response->setOutput($this->load->view($this->config->get('config_template') . '/discover/collect.tpl', $data));
+        if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/discover/gmv.tpl')) {
+            $this->response->setOutput($this->load->view($this->config->get('config_template') . '/discover/gmv.tpl', $data));
         } else {
-            $this->response->setOutput($this->load->view('default/discover/collect.tpl', $data));
+            $this->response->setOutput($this->load->view('default/discover/gmv.tpl', $data));
         }
     }
 }

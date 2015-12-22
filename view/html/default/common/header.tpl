@@ -30,6 +30,7 @@
     <script src="view/js/d3/d3.min.js" type="text/javascript"></script>
     <script src="view/js/elasticsearch-js/elasticsearch.js" type="text/javascript"></script>
     <script src="view/js/moment.js" type="text/javascript"></script>
+    <script src="view/js/md5.min.js"></script>
     <script src="view/js/daterangepicker.js" type="text/javascript"></script>
     <script src="view/js/query.js" type="text/javascript"></script>
     <!-- ECharts单文件引入 -->
@@ -91,7 +92,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">探索<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?php echo $discover_collect; ?>">埋点查询</a></li>
+                        <li><a href="<?php echo $discover_keys; ?>">埋点查询</a></li>
+                        <li><a href="<?php echo $discover_gmv; ?>">gmv查询</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

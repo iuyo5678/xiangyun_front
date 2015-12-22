@@ -30,6 +30,31 @@
         </div>
     </div>
 </div>
+
+<div class="statistics-container">
+    <h3>订单gmv统计</h3>
+    <p class="description ">目前订单分发所有的gmv的统计值(单位元)</p>
+    <div id="content-top">
+        <div class="option-container">
+            <div class="col-md-6">
+                <label class="col-lg-3" for="gmv-bdoor-date-ranger">选择时间范围:</label>
+                <input id="gmv-bdoor-date-ranger" class="col-md-9">
+            </div>
+            <div class="col-md-6">
+                <label class="col-lg-3" for="gmv-bdoor-interval">选则统计间隔</label>
+                <select class="col-md-6" id="gmv-bdoor-interval">
+                    <option value="3h">3小时</option>
+                    <option value="6h">6小时</option>
+                    <option value="12h">12小时</option>
+                    <option value="24h" selected>24小时</option>
+                </select>
+            </div>
+        </div>
+        <div id="gmv-bdoor-visul" style="height:400px"></div>
+    </div>
+</div>
+
+
 <div class="statistics-container">
     <h3>用户搜索区域分布统计</h3>
 
@@ -70,6 +95,8 @@
         <div id="map_container" style="height:400px"></div>
     </div>
 </div>
+
+
 <div class="statistics-container">
     <h3>用户搜索query统计</h3>
 
@@ -137,6 +164,8 @@
         $('#query-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
         $('#province-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
 
+        $('#gmv-bdoor-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
+
 
 
         $('#collect-date-ranger').daterangepicker({
@@ -200,6 +229,19 @@
                     draw_province_data(start_time, end_time, "province-container", "*", 50, all_cards, "original_query");
                 });
 
+        $('#gmv-bdoor-date-ranger').daterangepicker({
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    startDate: start_time,
+                    endDate: end_time,
+                    format: 'YYYY-MM-DD hh:mm:ss'
+                },
+                function (start, end, label) {
+                    start_time = start;
+                    end_time = end;
+                    draw_gmv_data(start_time, end_time, "gmv-bdoor-visul", "order_status:>1 AND NOT order_status:3  AND NOT order_status:4  AND NOT order_status:5  AND NOT order_status:6", 50);
+                });
+
         $("#collect-interval").change(
                 function () {
                     checkValue = $("#collect-interval").val();
@@ -224,10 +266,17 @@
                     draw_raw_query_data(start_time, end_time, "query-container", "*", query_checkValue, all_cards, "original_query");
                 }
         );
+        //draw_pv_uv_svg_adv(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue, all_cards);
+        /*
          draw_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue, all_cards);
+
          draw_map_data(start_time, end_time, "map_container", "*", area_checkValue, all_cards);
          draw_raw_query_data(start_time, end_time, "query-raw-container", "*", query_raw_checkValue, all_cards, "original_query.raw");
          draw_raw_query_data(start_time, end_time, "query-container", "*", query_checkValue, all_cards, "original_query");
          draw_province_data(start_time, end_time, "province-container", "*", 50, all_cards, "province");
+        */
+
+        draw_gmv_data(start_time, end_time, "gmv-bdoor-visul", "order_status:>1 AND NOT order_status:3  AND NOT order_status:4  AND NOT order_status:5  AND NOT order_status:6", 50);
+
     });
 </script>

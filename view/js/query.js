@@ -50,7 +50,7 @@ function build_query(start, end, query_str, interval) {
                     },
                     "Click": {
                         "sum": {
-                            "script": "doc['clk_statistics.wz_weixiusimple'].value + doc['clk_statistics.wz_weixiuweak'].value + doc['clk_statistics.wz_banjiasimple'].value + doc['clk_statistics.wz_baojiesimple'].value + doc['clk_statistics.wz_baojieweak'].value + doc['clk_statistics.wz_pinpai'].value + doc['clk_statistics.wz_bdoor'].value + doc['clk_statistics.wz_hy_multi'].value"
+                            "script": "doc['clk_statistics.wz_weixiusimple'].value + doc['clk_statistics.wz_weixiuweak'].value + doc['clk_statistics.wz_banjiasimple'].value + doc['clk_statistics.wz_banjiaweak'].value + doc['clk_statistics.wz_baojiesimple'].value + doc['clk_statistics.wz_baojieweak'].value + doc['clk_statistics.wz_pinpai'].value + doc['clk_statistics.wz_bdoor'].value + doc['clk_statistics.wz_hy_multi'].value"
                         }
                     },
                     "UV": {
@@ -87,7 +87,7 @@ function build_pv_uv_query(start, end, query_str, interval, cards) {
         query_str += " AND  (";
     }
 
-    for (var i=0; i<cards.length;i++)
+    for (var i =0; i<cards.length;i++)
     {
         query_str += "_exists_: disp_statistics." + cards[i] +" OR "
     }
@@ -262,6 +262,115 @@ function build_click_query(start, end, query_str, interval, cards) {
                     "extended_bounds": {
                         "min": start,
                         "max": end
+                    }
+                }
+            }
+        }
+    };
+    return query;
+}
+
+
+function build_gmv_query(start, end, query_str) {
+    query_str = query_str || '*';
+    var query = {
+        "query": {
+            "filtered": {
+                "query": {
+                    "query_string": {
+                        "analyze_wildcard": true,
+                        "query": query_str
+                    }
+                },
+                "filter": {
+                    "bool": {
+                        "must": [
+                            {
+                                "range": {
+                                    "@timestamp": {
+                                        "gte": start,
+                                        "lte": end
+                                    }
+                                }
+                            }
+                        ],
+                        "must_not": []
+                    }
+                }
+            }
+        },
+        "aggs": {
+            "statistics": {
+                "terms": {
+                    "field": "provider_id",
+                    "size": 5,
+                    "order": {
+                        "GMV": "desc"
+                    }
+                },
+                "aggs": {
+                    "GMV": {
+                        "sum": {
+                            "field": "total_amount"
+                        }
+                    }
+                }
+            }
+        }
+    };
+    return query;
+}
+
+function build_category_gmv_query(start, end, query_str, interval) {
+    query_str = query_str || '*';
+    var query = {
+        "query": {
+            "filtered": {
+                "query": {
+                    "query_string": {
+                        "analyze_wildcard": true,
+                        "query": query_str
+                    }
+                },
+                "filter": {
+                    "bool": {
+                        "must": [
+                            {
+                                "range": {
+                                    "@timestamp": {
+                                        "gte": start,
+                                        "lte": end
+                                    }
+                                }
+                            }
+                        ],
+                        "must_not": []
+                    }
+                }
+            }
+        },
+        "aggs": {
+            "statistics": {
+                "date_histogram": {
+                    "field": "@timestamp",
+                    "interval": interval,
+                    "time_zone": "Asia/Shanghai",
+                    "min_doc_count": 1,
+                    "extended_bounds": {
+                        "min": start,
+                        "max": end
+                    }
+                },
+                "aggs": {
+                    "GMV": {
+                        "sum": {
+                            "field": "total_amount"
+                        }
+                    },
+                    "income": {
+                        "sum": {
+                            "field": "payment_paid_amount"
+                        }
                     }
                 }
             }

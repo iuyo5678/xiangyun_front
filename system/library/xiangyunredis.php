@@ -11,10 +11,12 @@ use Predis\Client;
 /**
  * \Redis
  */
-class Redis
+class XiangyunRedis
 {
     private $redis;
+    private $redis_conf;
     public function __construct($redis_conf) {
+        $this -> redis_conf = $redis_conf;
         $this -> redis = new Predis\Client($redis_conf);
     }
 
@@ -36,8 +38,8 @@ class Redis
                     throw new InvalidArgumentException('单位只能是 h m s ms');
                     break;
             }
-
-            $this-> redis->set($key,$value,$time);
+            $client = new Predis\Client($this->redis_conf);
+            self::_setex($key,$value,$time);
 
 
         } else {
@@ -65,6 +67,6 @@ class Redis
 
     private function _psetex($key,$value,$time)
     {
-        $this -> redis ->psetex($key,$time,$value);
+        self::psetex($key,$time,$value);
     }
 }

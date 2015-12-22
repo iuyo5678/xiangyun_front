@@ -45,8 +45,8 @@ class ControllerCommonHeader extends Controller {
 		$data['payment_collect'] = $this->url->link('payment/collect');
 		$data['payment_telecom'] = $this->url->link('payment/telecom');
 
-		$data['discover_collect'] = $this->url->link('discover/collect');
-
+		$data['discover_keys'] = $this->url->link('discover/keys');
+		$data['discover_gmv'] = $this->url->link('discover/gmv');
 
 
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/common/header.tpl')) {
