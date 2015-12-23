@@ -33,6 +33,10 @@
     <script src="view/js/md5.min.js"></script>
     <script src="view/js/daterangepicker.js" type="text/javascript"></script>
     <script src="view/js/query.js" type="text/javascript"></script>
+
+    <link href="view/js/jsoneditor/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    <script src="view/js/jsoneditor/jsoneditor.min.js"></script>
+
     <!-- ECharts单文件引入 -->
     <script src="http://echarts.baidu.com/doc/example/www2/js/echarts-all.js"></script>
 
@@ -94,6 +98,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="<?php echo $discover_keys; ?>">埋点查询</a></li>
                         <li><a href="<?php echo $discover_gmv; ?>">gmv查询</a></li>
+                        <li><a href="<?php echo $discover_logsearch; ?>">日志查询</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

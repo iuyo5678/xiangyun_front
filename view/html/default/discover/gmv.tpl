@@ -3,28 +3,34 @@
     <div class="row">
         <div class="statistics-container">
             <h3>各类目GMV查询</h3>
+
             <p class="description ">查询各个类目在各个日期的gmv</p>
+
             <div id="content-top">
                 <div class="option-container">
                     <div class="row">
-                        <div class="col-md-4 input-form">
-                            <label class="col-md-3 input-label" for="gmv-date-ranger">时间范围:</label>
-                            <input id="gmv-date-ranger" class="col-md-9 input-value">
+                        <div>
+                            <div class="col-md-6 input-form">
+                                <label class="col-md-3 input-label" for="gmv-date-ranger">时间范围:</label>
+                                <input id="gmv-date-ranger" class="col-md-9 input-value">
+                            </div>
+                            <div class="col-md-6 input-form">
+                                <label class="col-md-3 input-label" for="gmv-interval">统计间隔</label>
+                                <select class="col-md-8 input-value" id="gmv-interval">
+                                    <option value="12h">12小时</option>
+                                    <option value="24h" selected>一天</option>
+                                    <option value="1w">一周</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-4 input-form">
-                            <label class="col-md-3 input-label" for="gmv-interval">统计间隔</label>
-                            <select class="col-md-9 input-value" id="gmv-interval">
-                                <option value="12h">12小时</option>
-                                <option value="24h" selected>一天</option>
-                                <option value="1w">一周</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 input-form">
-                            <label class="col-md-2 input-label" for=" gmv-value">类目appid:</label>
-                            <input id="gmv-value" class="col-md-10 input-value" placeholder="10006">
-                        </div>
-                        <div class="col-md-1 input-form">
-                            <button id="gmv-search">查询</button>
+                        <div>
+                            <div class="col-md-6 input-form">
+                                <label class="col-md-2 input-label" for=" gmv-value">类目appid:</label>
+                                <input id="gmv-value" class="col-md-9 input-value" placeholder="10006">
+                            </div>
+                            <div class="col-md-2 input-form pull-right">
+                                <button id="gmv-search">查询</button>
+                            </div>
                         </div>
                     </div>
                 </div>

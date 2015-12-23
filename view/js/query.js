@@ -215,17 +215,6 @@ function build_term_query(start, end, query_str, size, cards, term) {
 function build_click_query(start, end, query_str, interval, cards) {
     query_str = query_str || '*';
 
-    if ( query != "*" && cards.length > 0 ){
-        query_str += " AND  (";
-    }
-
-    for (var i=0; i<cards.length;i++)
-    {
-        query_str += "_exists_: disp_statistics." + cards[i] +" OR "
-    }
-
-    query_str = query_str.substring(0, query_str.length-4) + ')';
-
     var query = {
         "query": {
             "filtered": {
@@ -371,6 +360,38 @@ function build_category_gmv_query(start, end, query_str, interval) {
                         "sum": {
                             "field": "payment_paid_amount"
                         }
+                    }
+                }
+            }
+        }
+    };
+    return query;
+}
+
+function build_log_query(start, end, query_str) {
+    query_str = query_str || '*';
+    var query = {
+        "query": {
+            "filtered": {
+                "query": {
+                    "query_string": {
+                        "analyze_wildcard": true,
+                        "query": query_str
+                    }
+                },
+                "filter": {
+                    "bool": {
+                        "must": [
+                            {
+                                "range": {
+                                    "@timestamp": {
+                                        "gte": start,
+                                        "lte": end
+                                    }
+                                }
+                            }
+                        ],
+                        "must_not": []
                     }
                 }
             }

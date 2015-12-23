@@ -22,6 +22,28 @@ function getURLVar(key) {
     }
 }
 
+
+
+function syntaxHighlight(json) {
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+}
+
+
 //导出到excel
 function AutomateExcel() {
     var html = d3.select("svg")
@@ -277,6 +299,7 @@ function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, quer
 
             // 添加一个table表格
             function tabulate(data, columns) {
+                d3.select(table_container).select('table').remove();
                 var table = d3.select(table_container).append('table')
                     .attr('width', width + margin.left + margin.right)
                     .attr('height', height + margin.top + margin.bottom)
@@ -677,6 +700,7 @@ function draw_pv_uv_svg_adv(start_day, end_day, svg_container, table_container, 
 
         // 添加一个table表格
         function tabulate(data, columns) {
+            d3.select(table_container).select('table').remove();
             var table = d3.select(table_container).append('table')
                 .attr('width', width + margin.left + margin.right)
                 .attr('height', height + margin.top + margin.bottom)
@@ -1250,7 +1274,7 @@ function draw_click_svg(start_day, end_day, svg_container, table_container, qure
 
     esp = elc_client.search({
             size: 5,
-            index: "logstash-search-*",
+            index: "logstash-click-search-*",
             body: build_click_query(start_time_stamp, end_time_stamp, qurey, interval, cards)
         })
         .then(function (resp) {
@@ -1283,6 +1307,7 @@ function draw_click_svg(start_day, end_day, svg_container, table_container, qure
 
             // 添加一个table表格
             function tabulate(data, columns) {
+                d3.select(table_container).select('table').remove();
                 var table = d3.select(table_container).append('table')
                     .attr('width', width + margin.left + margin.right)
                     .attr('height', height + margin.top + margin.bottom)
@@ -1661,4 +1686,21 @@ function draw_category_gmv_data(start_day, end_day, svn_container, query, interv
 
             map_chart.setOption(option);
         });
+}
+
+function get_log_data(log_source, start_time, end_time, log_top, query) {
+
+    start_time = start_time || DateAdd("d ", -17, setStartDay(new Date())).getTime();
+    end_time = end_time  || DateAdd("d ", -2, setEndDay(new Date())).getTime();
+
+    var elc_client = new elasticsearch.Client({hosts: data_server});
+    var result;
+    esp = elc_client.search({
+            size: log_top,
+            index: log_source,
+            body: build_log_query(start_time, end_time, query)
+        });
+
+    return esp
+
 }

@@ -38,6 +38,7 @@
                 <div id="collectTabContent" class="tab-content">
                     <div class="tab-pane fade in active" id="key-visul"></div>
                     <div class="tab-pane fade" id="key-table-tab"></div>
+
                 </div>
             </div>
         </div>

@@ -2,10 +2,9 @@
 <div class="container">
     <div class="row">
         <div id="content" class="<?php echo $class; ?>">
-
             <div class="statistics-container">
-                <h3>订单分发-违章缴费 PV UV 点击统计</h3>
-                <p class="description ">目前订单分发在搜索页面的PV UV 点击数据 卡片名wz_peccancy</p>
+                <h3>订单分发-按摩 PV UV 点击统计</h3>
+                <p class="description ">目前按摩在搜索页面的PV UV 点击数据 卡片名wz_bdoor</p>
                 <div id="content-top">
                     <div class="option-container">
                         <div class="col-md-6">

@@ -267,15 +267,13 @@
                 }
         );
         //draw_pv_uv_svg_adv(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue, all_cards);
-        /*
+
          draw_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue, all_cards);
 
          draw_map_data(start_time, end_time, "map_container", "*", area_checkValue, all_cards);
          draw_raw_query_data(start_time, end_time, "query-raw-container", "*", query_raw_checkValue, all_cards, "original_query.raw");
          draw_raw_query_data(start_time, end_time, "query-container", "*", query_checkValue, all_cards, "original_query");
          draw_province_data(start_time, end_time, "province-container", "*", 50, all_cards, "province");
-        */
-
         draw_gmv_data(start_time, end_time, "gmv-bdoor-visul", "order_status:>1 AND NOT order_status:3  AND NOT order_status:4  AND NOT order_status:5  AND NOT order_status:6", 50);
 
     });
