@@ -105,9 +105,7 @@ body > #container { height: auto; min-height: 100%; }
 body {
     background: #f0f0f0
 }
-.container{
-    min-height:500px;
-}
+
 .input-label {
     width: 35%;
     padding-left: 0;

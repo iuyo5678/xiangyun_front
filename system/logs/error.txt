@@ -1882,3 +1882,26 @@
 2015-12-16 10:56:28 - PHP Notice:  Array to string conversion in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/system/library/response.php on line 72
 2015-12-22 11:38:44 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/collect.tpl on line 4
 2015-12-22 11:38:49 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-23 3:48:54 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-23 4:32:22 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-23 5:02:27 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/collect.tpl on line 4
+2015-12-23 5:02:54 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-23 5:04:07 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-23 5:05:00 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/repair.tpl on line 4
+2015-12-23 5:05:11 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/collect.tpl on line 4
+2015-12-23 5:05:25 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/repair.tpl on line 4
+2015-12-23 6:29:54 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/repair.tpl on line 4
+2015-12-23 6:31:28 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/clean.tpl on line 4
+2015-12-23 6:38:10 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/clean.tpl on line 4
+2015-12-23 6:38:59 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/collect.tpl on line 4
+2015-12-23 6:41:13 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/collect.tpl on line 4
+2015-12-23 6:41:41 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/repair.tpl on line 4
+2015-12-23 6:42:04 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/collect.tpl on line 4
+2015-12-23 6:42:20 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/massage.tpl on line 4
+2015-12-23 6:42:26 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/massage.tpl on line 4
+2015-12-23 6:42:31 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/nail.tpl on line 4
+2015-12-23 6:42:36 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/peccancy.tpl on line 4
+2015-12-23 7:03:55 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/massage.tpl on line 4
+2015-12-23 7:04:38 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/bdoor/collect.tpl on line 4
+2015-12-23 7:59:06 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/repair.tpl on line 4
+2015-12-23 8:01:40 - PHP Notice:  Undefined variable: class in /Applications/XAMPP/xamppfiles/htdocs/xiangyun_front/view/html/default/yp/repair.tpl on line 4
