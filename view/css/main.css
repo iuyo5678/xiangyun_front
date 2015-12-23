@@ -23,6 +23,7 @@ body {
     min-width: 1280px;
     overflow-x: hidden;
     text-align: left;
+    padding-bottom: 70px;
 }
 
 /*
@@ -105,7 +106,9 @@ body > #container { height: auto; min-height: 100%; }
 body {
     background: #f0f0f0
 }
-
+.container{
+    min-height:100%;
+}
 .input-label {
     width: 35%;
     padding-left: 0;
@@ -289,7 +292,7 @@ caption {
 /*页脚部分*/
 
 footer {
-    margin-top: 50px;
+    margin-top: -80px;
     background-color: #0b0b0b;
     color: #ffffff;
     clear: both;
