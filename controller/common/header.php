@@ -49,6 +49,8 @@ class ControllerCommonHeader extends Controller {
 		$data['discover_gmv'] = $this->url->link('discover/gmv');
 		$data['discover_logsearch'] = $this->url->link('discover/logsearch');
 
+		$data['discover_statistical'] = $this->url->link('discover/statistical');
+
 
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/common/header.tpl')) {
 			return $this->load->view($this->config->get('config_template') . '/common/header.tpl', $data);

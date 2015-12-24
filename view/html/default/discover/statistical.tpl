@@ -47,10 +47,8 @@
                     </div>
                 </div>
                 <div class="query-result">
-                    <div>
-                        <p id="result-desc"></p>
-                    </div>
                     <div id="result">
+
                     </div>
                 </div>
             </div>
@@ -85,15 +83,12 @@
                     var log_data = get_log_data(log_source, start_time, end_time, log_top, query);
 
                     log_data.then(function (resp) {
-                        var result = resp.hits.hits;
-                        var take_time = resp.took;
-                        var count = resp.hits.total;
+                        result = resp.hits.hits;
                        //var container = document.getElementById("result");
-                        var desp = "".concat("总计耗时: ", take_time, "毫秒. 找到日志共计: ", count, "条 下面是其中的", log_top, "条.");
-                        var desc_container = $('#result-desc');
-                        desc_container.text(desp);
+
                         var container = $('#result');
                         container.empty();
+
 
                         var editor = new JSONEditor(container[0]);
                         // set json
