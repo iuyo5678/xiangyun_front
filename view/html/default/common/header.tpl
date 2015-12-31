@@ -77,21 +77,17 @@
                         <li><a href="<?php echo $bdoor_massage; ?>">按摩</a></li>
                         <li><a href="<?php echo $bdoor_nail; ?>">美甲</a></li>
                         <li><a href="<?php echo $bdoor_peccancy; ?>">违章</a></li>
+                        <li><a href="<?php echo $bdoor_jiazhuang; ?>">家装</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">支付闭环<span class="caret"></span></a>
                     <ul class="dropdown-menu">
+                        <li><a href="<?php echo $payment_collect; ?>">汇总</a></li>
                         <li><a href="<?php echo $payment_telecom; ?>">电信充值</a></li>
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">提交</button>
-            </form>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">探索<span class="caret"></span></a>

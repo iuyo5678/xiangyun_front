@@ -7,9 +7,7 @@
  */
 class ControllerPaymentCollect extends Controller {
     public function index() {
-        $this->load->language('account/success');
-
-        $this->document->setTitle($this->language->get('heading_title'));
+        $this->document->setTitle('电信充值');
 
         $data['breadcrumbs'] = array();
 

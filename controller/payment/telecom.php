@@ -7,9 +7,8 @@
  */
 class ControllerPaymentTelecom extends Controller {
     public function index() {
-        $this->load->language("");
 
-        $this->document->setTitle("");
+        $this->document->setTitle("电信充值");
 
         $data['breadcrumbs'] = array();
 

@@ -17,7 +17,7 @@ body {
     font-family: 'Microsoft YaHei', sans-serif;
     font-weight: 400;
     color: #666;
-    background-color: #f0f0f0;
+    background-color: #ececec;
     font-size: 18px;
     line-height: 22px;
     min-width: 1280px;
@@ -124,10 +124,16 @@ body {
     padding-left: 5px;
     padding-right: 5px;
     text-align: center;
+    min-height: 40px;
 }
+
 button{
-    background-color: #9acfea;
+    width: 40%;
+    background-color: #5ac2a5;;
     border: none;
+    height: 40px;
+    color: white;
+    margin-bottom: 15px;
 }
 
 .statistics-container {
@@ -275,19 +281,22 @@ caption {
     background:#bcd9e1;
 }
 
-.input-form {
-    height: 34px;
-}
-
-
-
-
 
 .option-container {
     width: 100%;
     padding: 15px;
 }
 
+.option-group {
+    padding: 15px;
+    margin: 0 20px 10px;
+    background-color: #ececec;
+    border-radius:10px;
+    -moz-border-radius:10px;
+}
+.option-group .option-title{
+    text-align: center;
+}
 
 
 /*页脚部分*/

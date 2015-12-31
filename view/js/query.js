@@ -155,6 +155,21 @@ function build_pv_uv_query(start, end, query_str, interval, cards) {
     return query;
 }
 
+function build_parameter_query(log_source) {
+    query = {
+        "query": {
+        "filtered": {
+            "query": {
+                "query_string": {
+                    "query": "title:" + log_source,
+                        "analyze_wildcard": true
+                }
+            }
+        }
+    }
+    }
+    return query
+}
 function build_term_query(start, end, query_str, size, cards, term) {
     query_str = query_str || '*';
     size = size || 5;

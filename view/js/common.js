@@ -248,6 +248,16 @@ var getFnName = function (callee) {
 };
 
 
+function get_all_parameters(log_source, log_type) {
+    var elc_client = new elasticsearch.Client({hosts: data_server});
+    esp = elc_client.search({
+            size: 1,
+            index: ".kibana",
+            type: "index-pattern",
+            body: build_parameter_query(log_source)
+        });
+    return esp;
+}
 function draw_pv_uv_svg(start_day, end_day, svg_container, table_container, query, interval, cards) {
     var start_time_stamp = start_day || DateAdd("d ", -17, setStartDay(new Date())).getTime();
     var end_time_stamp = end_day || DateAdd("d ", -2, setEndDay(new Date())).getTime();

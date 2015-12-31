@@ -8,8 +8,8 @@
 
             <div id="content-top">
                 <div class="option-container">
-                    <div class="row">
-                        <div>
+                    <div class="row option-group">
+                        <div class="row">
                             <div class="col-md-6 input-form">
                                 <label class="col-md-3 input-label" for="gmv-date-ranger">时间范围:</label>
                                 <input id="gmv-date-ranger" class="col-md-9 input-value">
@@ -23,13 +23,15 @@
                                 </select>
                             </div>
                         </div>
-                        <div>
+                        <div class="row">
                             <div class="col-md-6 input-form">
                                 <label class="col-md-2 input-label" for=" gmv-value">类目appid:</label>
                                 <input id="gmv-value" class="col-md-9 input-value" placeholder="10006">
                             </div>
-                            <div class="col-md-2 input-form pull-right">
-                                <button id="gmv-search">查询</button>
+                            <div class="col-md-6 input-form">
+                                <div class="col-md-offset-4  col-md-4 input-form">
+                                    <button id="gmv-search">查询</button>
+                                </div>
                             </div>
                         </div>
                     </div>
