@@ -84,7 +84,7 @@ function build_pv_uv_query(start, end, query_str, interval, cards) {
     click_query = click_query.substring(0, click_query.length-3);
 
     if ( query != "*" && cards.length > 0 ){
-        query_str += " AND  (";
+        query_str = "";
     }
 
     for (var i =0; i<cards.length;i++)
@@ -92,7 +92,7 @@ function build_pv_uv_query(start, end, query_str, interval, cards) {
         query_str += "_exists_: disp_statistics." + cards[i] +" OR "
     }
 
-    query_str = query_str.substring(0, query_str.length-4) + ')';
+    query_str = query_str.substring(0, query_str.length-4);
 
     var query = {
         "query": {

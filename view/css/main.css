@@ -299,6 +299,13 @@ caption {
 }
 
 
+.agg-table {
+    width: 100%;
+}
+.agg-table tbody tr{
+    height: 50px;
+}
+
 /*页脚部分*/
 
 footer {

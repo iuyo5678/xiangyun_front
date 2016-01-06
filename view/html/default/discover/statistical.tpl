@@ -38,74 +38,302 @@
                         <div>
                             <p class="option-title">统计选项</p>
                         </div>
-                        <div class="col-md-6 input-form">
-                            <label class="col-md-3 input-label" for="log-type">统计类型:</label>
-                            <select class="col-md-8 input-value" id="log-type">
-                                <option value="count" selected>日志条目</option>
-                                <option value="avg">平均值</option>
-                                <option value="sum">求和</option>
-                                <option value="median">中位数</option>
-                                <option value="min">最小值</option>
-                                <option value="max">最大值</option>
-                                <option value="standard_deviation">标准差</option>
-                                <option value="unique_count">去重计数</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 input-form" id="input-log-field" style="display: none">
-                            <label class="col-md-3 input-label" for="log-field">选择字段:</label>
-                            <select class="col-md-8 input-value" id="log-field">
-                            </select>
-                        </div>
+                        <?php $statistics_row = 0; ?>
+                        <table id="statistics" class="agg-table">
+                            <tbody>
+                            <tr id="statistics-row<?php echo $statistics_row; ?>">
+                                <td style="width: 90%">
+                                    <div class="col-md-6 input-form">
+                                        <label class="col-md-3 input-label" for="statistic-type<?php echo $statistics_row; ?>">统计类型:</label>
+                                        <select class="col-md-8 input-value" type="statistic-type-select" id="statistic-type<?php echo $statistics_row; ?>" onchange="statisticalChange(this)">
+                                            <option value="count" selected>日志条目</option>
+                                            <option value="avg">平均值</option>
+                                            <option value="sum">求和</option>
+                                            <option value="median">中位数</option>
+                                            <option value="min">最小值</option>
+                                            <option value="max">最大值</option>
+                                            <option value="standard_deviation">标准差</option>
+                                            <option value="unique_count">去重计数</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 input-form" id="statistic-filed-input<?php echo $statistics_row; ?>" style="display: none">
+                                        <label class="col-md-3 input-label" for="statistic-field<?php echo $statistics_row; ?>">选择字段:</label>
+                                        <select class="col-md-8 input-value field-select" type="number" id="statistic-field<?php echo $statistics_row; ?>">
+                                        </select>
+                                    </div>
+                                </td>
+                                <td style="width: 10%">
+                                    <button type="button"
+                                            onclick="$('#statistics-row<?php echo $statistics_row; ?>').remove();"
+                                            data-toggle="tooltip" title="移除该统计" class="btn btn-danger"><i
+                                                class="fa fa-minus-circle"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <?php $statistics_row++; ?>
+                            <tfoot>
+                            <tr id="statistics-row<?php echo $statistics_row; ?>">
+                                <td style="width: 90%">
+                                </td>
+                                <td style="width: 10%">
+                                    <button type="button" onclick="addStatistics();" data-toggle="tooltip"
+                                            title="添加新的统计项" class="btn btn-primary"><i class="fa fa-plus-circle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
                     </div>
                     <div class="row option-group">
                         <div>
                             <p class="option-title">聚合维度</p>
                         </div>
-                        <div class="col-md-6 input-form">
-                            <label class="col-md-3 input-label" for="aggs-type">聚合类型:</label>
-                            <select class="col-md-8 input-value" id="aggs-type">
-                                <option value="date_histogram" selected>时间聚合</option>
-                                <option value="histogram" >数值聚合</option>
-                                <option value="range" >数值范围聚合</option>
-                                <option value="date_range" >时间范围聚合</option>
-                                <option value="terms" >字段聚合</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 input-form" id="input-aggs-field" style="display: none">
-                            <label class="col-md-3 input-label" for="aggs-field">选择字段:</label>
-                            <select class="col-md-8 input-value" id="aggs-field">
-                            </select>
-                        </div>
-                        <div class="col-md-6 input-form" id="input-aggs-interval">
-                            <label class="col-md-3 input-label" for="aggs-interval">时间间隔:</label>
-                            <select class="col-md-8 input-value" id="aggs-interval">
-                                <option value="3h">3小时</option>
-                                <option value="6h">6小时</option>
-                                <option value="12h">12小时</option>
-                                <option value="24h" selected>24小时</option>
-                            </select>
-                        </div>
+                        <?php $aggs_row = 0; ?>
+                        <table id="aggs" class="agg-table">
+                            <tbody>
+                            <tr id="aggs-row<?php echo $aggs_row; ?>">
+                                <td style="width: 90%">
+                                    <div class="col-md-6 input-form">
+                                        <label class="col-md-3 input-label" for="aggs-type<?php echo $aggs_row; ?>">聚合类型:</label>
+                                        <select class="col-md-8 input-value" id="aggs-type<?php echo $aggs_row; ?>" onchange="aggsChange(this)">
+                                            <option value="date_histogram" selected>时间聚合</option>
+                                            <!--
+                                            <option value="histogram">数值聚合</option>
+                                            <option value="range">数值范围聚合</option>
+                                            <option value="date_range">时间范围聚合</option> -->
+                                            <option value="terms">字段聚合</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 input-form" id="input-aggs-field<?php echo $aggs_row; ?>">
+                                        <label class="col-md-3 input-label" for="aggs-field<?php echo $aggs_row; ?>">选择字段:</label>
+                                        <select class="col-md-8 input-value field-select" type="date" id="aggs-field<?php echo $aggs_row; ?>"></select>
+                                    </div>
+                                    <div class="col-md-6 input-form" id="input-aggs-interval<?php echo $aggs_row; ?>">
+                                        <label class="col-md-3 input-label" for="aggs-interval<?php echo $aggs_row; ?>">时间间隔:</label>
+                                        <select class="col-md-8 input-value" id="aggs-interval<?php echo $aggs_row; ?>">
+                                            <option value="3h">3小时</option>
+                                            <option value="6h">6小时</option>
+                                            <option value="12h">12小时</option>
+                                            <option value="24h" selected>24小时</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td style="width: 10%">
+                                    <button type="button" onclick="$('#aggs-row<?php echo $aggs_row; ?>').remove();"
+                                            data-toggle="tooltip" title="移除该聚合" class="btn btn-danger"><i
+                                                class="fa fa-minus-circle"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <?php $aggs_row++; ?>
+                            <tfoot>
+                            <tr>
+                                <td style="width: 90%"></td>
+                                <td style="width: 10%">
+                                    <button type="button" onclick="addAggs();" data-toggle="tooltip"
+                                            title="添加新的聚合" class="btn btn-primary"><i class="fa fa-plus-circle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
                     </div>
-                    <div class="row">
-                        <div>
-                            <div class="col-md-offset-4  col-md-4 input-form">
-                                <button id="log-search">查询</button>
-                            </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <div class="col-md-offset-4  col-md-4 input-form">
+                            <button id="log-search">查询</button>
                         </div>
                     </div>
                 </div>
-                <div class="query-result">
-                    <div id="result">
-
-                    </div>
+            </div>
+            <div class="query-result">
+                <div id="result">
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
 <?php echo $footer; ?>
 <script>
+    var aggs_row = <?php echo $aggs_row; ?>;
+    var statistics_row = <?php echo $statistics_row; ?>;
+
+    function statisticalChange(changeObject) {
+        console.log("this is test");
+        var id_name = changeObject.id;
+        var statistic_row = (id_name.substr(id_name.length-1));
+        var field_id = "#statistic-filed-input" + statistic_row;
+        var select_field_id = "#statistic-field" + statistic_row;
+        if (changeObject.value != "count" && changeObject.value != "unique_count") {
+            $(field_id).show();
+            var log_source = $("#log-source").val();
+            var para_array = get_all_parameters(log_source);
+            para_array.then(function (resp) {
+                var data = JSON.parse(resp.hits.hits[0]._source.fields);
+                var result = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].type == 'number' && data[i].name[0] != "_" &&
+                            data[i].name.substring(0, 5) != "geoip")
+                        result.push(data[i].name)
+                }
+                var select_con = $(select_field_id);
+                select_con.empty();
+                select_con.attr('type', "number")
+                for (var item in result) {
+                    select_con.append($("<option>").attr('value', result[item]).text(result[item]));
+                }
+            });
+        }else if(changeObject.value == "unique_count"){
+            $(field_id).show();
+            var log_source = $("#log-source").val();
+            var para_array = get_all_parameters(log_source);
+            para_array.then(function (resp) {
+                var data = JSON.parse(resp.hits.hits[0]._source.fields);
+                var result = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].type != 'date' && data[i].name[0] != "_" &&
+                            data[i].name.substring(0, 5) != "geoip")
+                        result.push(data[i].name)
+                }
+                var select_con = $(select_field_id);
+                select_con.empty();
+                select_con.attr('type', "str")
+                for (var item in result) {
+                    select_con.append($("<option>").attr('value', result[item]).text(result[item]));
+                }
+            });
+        } else {
+            $(field_id).hide();
+        }
+    }
+    function aggsChange(changeObject) {
+        console.log("this is test");
+        var id_name = changeObject.id;
+        var aggs_row = (id_name.substr(id_name.length-1));
+        var aggs_con = $('#aggs-row'+ aggs_row + ' td:first');
+        if (changeObject.value == "date_histogram") {
+            html = '<div class="col-md-6 input-form" id="input-aggs-interval'+ aggs_row +'"> ' +
+                    '<label class="col-md-3 input-label" for="aggs-interval'+ aggs_row +'">时间间隔:</label>' +
+                    '<select class="col-md-8 input-value" id="aggs-interval'+ aggs_row +'">' +
+                    '<option value="3h">3小时</option>' +
+                    '<option value="6h">6小时</option>' +
+                    '<option value="12h">12小时</option>' +
+                    '<option value="24h" selected>24小时</option></select></div>';
+            aggs_con.append(html);
+            var field_id = '#aggs-field' + aggs_row;
+            var log_source = $("#log-source").val();
+            var para_array = get_all_parameters(log_source);
+            para_array.then(function (resp) {
+                var data = JSON.parse(resp.hits.hits[0]._source.fields);
+                var result = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].type == 'date' && data[i].name[0] != "_" && data[i].name.substring(0, 5) != "geoip")
+                        result.push(data[i].name)
+                }
+                var select_con = $(field_id);
+                select_con.empty();
+                select_con.attr('type', "date")
+                for (var item in result) {
+                    select_con.append($("<option>").attr('value', result[item]).text(result[item]));
+                }
+            });
+
+        }else if (changeObject.value == "terms"){
+            $('#input-aggs-interval' + aggs_row).remove();
+            var field_id = '#aggs-field' + aggs_row;
+            var log_source = $("#log-source").val();
+            var para_array = get_all_parameters(log_source);
+            para_array.then(function (resp) {
+                var data = JSON.parse(resp.hits.hits[0]._source.fields);
+                var result = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].name[0] != "_" && data[i].name.substring(0, 5) != "geoip")
+                        result.push(data[i].name)
+                }
+                var select_con = $(field_id);
+                select_con.empty();
+                select_con.attr('type', "str");
+                for (var item in result) {
+                    select_con.append($("<option>").attr('value', result[item]).text(result[item]));
+                }
+            });
+        } else {
+            console.log("unknown command!")
+        }
+    }
+
+    function addStatistics() {
+        html = '<tr id="statistics-row'+ statistics_row +'">'
+        html += '<td style="width: 90%"><div class="col-md-6 input-form">' +
+                '<label class="col-md-3 input-label" for="statistic-type' + statistics_row + '">统计类型:</label>' +
+                '<select class="col-md-8 input-value" type="statistic-type-select" id="statistic-type' + statistics_row + '" onchange="statisticalChange(this)"><option value="count" selected>日志条目</option>' +
+                '<option value="avg">平均值</option>' +
+                '<option value="sum">求和</option>' +
+                '<option value="median">中位数</option>' +
+                '<option value="min">最小值</option>'+
+                '<option value="max">最大值</option>' +
+                '<option value="standard_deviation">标准差</option>' +
+                '<option value="unique_count">去重计数</option></select></div>' +
+                '<div class="col-md-6 input-form" id="statistic-filed-input' + statistics_row + '" style="display: none">' +
+                '<label class="col-md-3 input-label" for="statistic-field' + statistics_row + '">选择字段:</label>' +
+                '<select class="col-md-8 input-value field-select" type="number" id="statistic-field' + statistics_row + '">' +
+                '</select></div></td><td style="width: 10%">' +
+                '<button type="button" onclick="$(\'#statistics-row' + statistics_row + '\').remove();"' +
+                'data-toggle="tooltip" title="移除该统计" class="btn btn-danger"><i class="fa fa-minus-circle"></i>' +
+                '</button></td></tr>';
+        $('#statistics tbody').append(html);
+
+        statistics_row++;
+    }
+    function addAggs() {
+        html = '<tr id="aggs-row' + aggs_row + '">';
+        html += '<td style="width: 90%"><div class="col-md-6 input-form"><label class="col-md-3 input-label" for="aggs-type' + aggs_row + '">聚合类型:</label>' +
+                '<select class="col-md-8 input-value" id="aggs-type' + aggs_row + '" onchange="aggsChange(this)">' +
+                '<option value="date_histogram" selected>时间聚合</option>' +
+                '<option value="terms">字段聚合</option>' +
+                '</select></div>' +
+                '<div class="col-md-6 input-form" id="input-aggs-field'+ aggs_row +'">' +
+                '<label class="col-md-3 input-label" for="aggs-field'+ aggs_row +'">选择字段:</label>' +
+                '<select class="col-md-8 input-value" id="aggs-field'+ aggs_row +'"></select>' +
+                '</div><div class="col-md-6 input-form" id="input-aggs-interval'+ aggs_row +'"> ' +
+                '<label class="col-md-3 input-label" for="aggs-interval'+ aggs_row +'">时间间隔:</label>' +
+                '<select class="col-md-8 input-value field-select" type="date" id="aggs-interval'+ aggs_row +'">' +
+                '<option value="3h">3小时</option>' +
+                '<option value="6h">6小时</option>' +
+                '<option value="12h">12小时</option>' +
+                '<option value="24h" selected>24小时</option></select></div>' +
+                '</td>' +
+                '<td style="width: 10%">' +
+                '<button type="button" ' +
+                'onclick="$(\'#aggs-row' + aggs_row + '\').remove();" ' +
+                'data-toggle="tooltip" title="移除该聚合" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>' + '</td>'
+        html += '</tr>';
+
+        $('#aggs tbody').append(html);
+
+        var field_id = '#aggs-field' + aggs_row;
+        var log_source = $("#log-source").val();
+        var para_array = get_all_parameters(log_source);
+        para_array.then(function (resp) {
+            var data = JSON.parse(resp.hits.hits[0]._source.fields);
+            var result = [];
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].type == 'date' && data[i].name[0] != "_" && data[i].name.substring(0, 5) != "geoip")
+                    result.push(data[i].name)
+            }
+            var select_con = $(field_id);
+            select_con.empty();
+            for (var item in result) {
+                select_con.append($("<option>").attr('value', result[item]).text(result[item]));
+            }
+        });
+
+        aggs_row++;
+    }
     $(document).ready(function () {
+
         var start_time = DateAdd("d ", -17, setStartDay(new Date()));
         var end_time = DateAdd("d ", -2, setEndDay(new Date()));
         var date_ranger = $('#log-date-ranger');
@@ -123,69 +351,70 @@
                     end_time = end;
                 }
         );
-        $("#log-type").change(
-                function () {
-                    var log_type_value = $("#log-type").val();
-                    if( log_type_value != "count" ){
-                        $('#input-log-field').show();
-                        var log_source = $("#log-source").val();
-                        var para_array = get_all_parameters(log_source);
-                        para_array.then(function(resp) {
-                            var data = JSON.parse(resp.hits.hits[0]._source.fields);
-                            var result = [];
-                            for (var i=0; i<data.length; i++)
-                            {
-                                if (data[i].type == 'number' && data[i].name[0] != "_" &&
-                                        data[i].name.substring(0,5) != "geoip")
-                                    result.push(data[i].name)
-                            }
-                            var select_con = $('#log-field');
-                            select_con.empty();
-                            for(var item in result){
-                                select_con.append($("<option>").attr('value', result[item]).text(result[item]));
-                            }
-                        });
-                    } else {
-                        $('#input-log-field').hide();
-                    }
-                }
-        );
+
+        var field_id = '#aggs-field0';
+        var log_source = $("#log-source").val();
+        var para_array = get_all_parameters(log_source);
+        para_array.then(function (resp) {
+            var data = JSON.parse(resp.hits.hits[0]._source.fields);
+            var result = [];
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].type == 'date' && data[i].name[0] != "_" && data[i].name.substring(0, 5) != "geoip")
+                    result.push(data[i].name)
+            }
+            var select_con = $(field_id);
+            select_con.empty();
+            for (var item in result) {
+                select_con.append($("<option>").attr('value', result[item]).text(result[item]));
+            }
+        });
+
 
         $("#log-source").change(
                 function () {
-                    var log_type_value = $("#log-type").val();
-                    if( log_type_value != "count" ){
-                        $('#input-log-field').show();
-                        var log_source = $("#log-source").val();
-                        var para_array = get_all_parameters(log_source);
-                        para_array.then(function(resp) {
-                            var data = JSON.parse(resp.hits.hits[0]._source.fields);
+                    var select_cons = $('.field-select');
+                    select_cons.empty()
+                    var log_source = $("#log-source").val();
+                    var para_array = get_all_parameters(log_source);
+                    para_array.then(function (resp) {
+                        var data = JSON.parse(resp.hits.hits[0]._source.fields);
+                        for(var index = 0 ; index < select_cons.length; index++) {
                             var result = [];
-                            for (var i=0; i<data.length; i++)
-                            {
-                                if (data[i].type == 'number')
-                                    result.push(data[i].name)
+                            var jquery_object = $(select_cons[index]);
+                            if (jquery_object.attr('type') == "str"){
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].type != 'date' && data[i].name[0] != "_" && data[i].name.substring(0, 5) != "geoip")
+                                        result.push(data[i].name)
+                                }
+                                for (var item in result) {
+                                    jquery_object.append($("<option>").attr('value', result[item]).text(result[item]));
+                                }
+
+                            } else if (jquery_object.attr('type') == "date"){
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].type == 'date' && data[i].name[0] != "_" && data[i].name.substring(0, 5) != "geoip")
+                                        result.push(data[i].name)
+                                }
+                                for (var item in result) {
+                                    jquery_object.append($("<option>").attr('value', result[item]).text(result[item]));
+                                }
+
+                            } else if (jquery_object.attr('type') == "number"){
+                                for (var i = 0; i < data.length; i++) {
+                                    if (data[i].type == 'number' && data[i].name[0] != "_" && data[i].name.substring(0, 5) != "geoip")
+                                        result.push(data[i].name)
+                                }
+                                for (var item in result) {
+                                    jquery_object.append($("<option>").attr('value', result[item]).text(result[item]));
+                                }
+
+                            }else {
+
                             }
-                            var select_con = $('#log-field');
-                            select_con.empty();
-                            for(var item in result){
-                                select_con.append($("<option>").attr('value', result[item]).text(result[item]));
-                            }
-                        });
-                    } else {
-                        $('#input-log-field').hide();
-                    }
+                        }
+                    });
                 }
         );
-
-        $("#aggs-type").change(
-                function () {
-
-                }
-        );
-
-
-
 
         $("#log-search").click(
                 function () {
@@ -193,10 +422,9 @@
                     var log_source = $("#log-source").val();
                     var query = $("#log-query").val();
                     var log_data = get_log_data(log_source, start_time, end_time, log_top, query);
-
                     log_data.then(function (resp) {
                         result = resp.hits.hits;
-                       //var container = document.getElementById("result");
+                        //var container = document.getElementById("result");
 
                         var container = $('#result');
                         container.empty();
@@ -204,9 +432,7 @@
                         var editor = new JSONEditor(container[0]);
                         // set json
                         editor.set(result);
-
                     });
-
                 }
         );
     });
