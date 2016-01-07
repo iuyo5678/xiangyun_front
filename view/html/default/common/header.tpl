@@ -33,7 +33,6 @@
     <script src="view/js/md5.min.js"></script>
     <script src="view/js/daterangepicker.js" type="text/javascript"></script>
     <script src="view/js/query.js" type="text/javascript"></script>
-
     <link href="view/js/jsoneditor/jsoneditor.min.css" rel="stylesheet" type="text/css">
     <script src="view/js/jsoneditor/jsoneditor.min.js"></script>
 
@@ -49,6 +48,7 @@
     <?php foreach ($scripts as $script) { ?>
     <script src="<?php echo $script; ?>" type="text/javascript"></script>
     <?php } ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body class="<?php echo $class; ?>">
 <nav class="navbar navbar-inverse">

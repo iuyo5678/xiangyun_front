@@ -46,7 +46,7 @@
                                     <div>
                                         <div class="col-md-6 input-form">
                                             <label class="col-md-2 input-label" for="statistic-name<?php echo $statistics_row; ?>">统计名称:</label>
-                                            <input id="statistic-name<?php echo $statistics_row; ?>" class="col-md-9 input-value" value="日志条目">
+                                            <input id="statistic-name<?php echo $statistics_row; ?>" class="col-md-9 input-value" value="日志条目<?php echo $statistics_row; ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-6 input-form">
@@ -102,7 +102,7 @@
                                     <div>
                                         <div class="col-md-6 input-form">
                                             <label class="col-md-2 input-label" for="aggs-name<?php echo $aggs_row; ?>">聚合名称:</label>
-                                            <input id="aggs-name<?php echo $aggs_row; ?>" class="col-md-9 input-value" value="时间聚合">
+                                            <input id="aggs-name<?php echo $aggs_row; ?>" class="col-md-9 input-value" value="时间聚合<?php echo $aggs_row; ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-6 input-form">
@@ -160,7 +160,7 @@
                 </div>
             </div>
             <div class="query-result">
-                <div id="result">
+                <div class="editor" id="result">
                 </div>
             </div>
         </div>
@@ -219,6 +219,8 @@
         } else {
             $(field_id).hide();
         }
+        var show_text = $('#statistic-type' + statistic_row + ' option[value=\''+ changeObject.value +'\']').text().trim()
+        $('#statistic-name' + statistic_row).attr('value',show_text + statistic_row);
     }
     function aggsChange(changeObject) {
         console.log("this is test");
@@ -237,6 +239,7 @@
             var field_id = '#aggs-field' + aggs_row;
             var log_source = $("#log-source").val();
             var para_array = get_all_parameters(log_source);
+            $('#aggs-name' + aggs_row).attr('value',"时间聚合" + aggs_row);
             para_array.then(function (resp) {
                 var data = JSON.parse(resp.hits.hits[0]._source.fields);
                 var result = [];
@@ -257,6 +260,7 @@
             var field_id = '#aggs-field' + aggs_row;
             var log_source = $("#log-source").val();
             var para_array = get_all_parameters(log_source);
+            $('#aggs-name' + aggs_row).attr('value', "字段聚合" + aggs_row);
             para_array.then(function (resp) {
                 var data = JSON.parse(resp.hits.hits[0]._source.fields);
                 var result = [];
@@ -281,7 +285,7 @@
         html += '<td style="width: 90%">' +
                 '<div><div class="col-md-6 input-form">' +
                 '<label class="col-md-2 input-label" for="statistic-name' + statistics_row + '">统计名称:</label>' +
-                '<input id="statistic-name' + statistics_row + '" class="col-md-9 input-value" value="日志条目">' +
+                '<input id="statistic-name' + statistics_row + '" class="col-md-9 input-value" value="日志条目' + statistics_row + '">' +
                 '</div></div>' +
                 '<div class="col-md-6 input-form">' +
                 '<label class="col-md-3 input-label" for="statistic-type' + statistics_row + '">统计类型:</label>' +
@@ -309,7 +313,7 @@
         html += '<td style="width: 90%">' +
                 '<div><div class="col-md-6 input-form">' +
                 '<label class="col-md-2 input-label" for="aggs-name'+ aggs_row +'">聚合名称:</label>' +
-                '<input id="aggs-name'+ aggs_row +'" class="col-md-9 input-value" value="时间聚合">' +
+                '<input id="aggs-name'+ aggs_row +'" class="col-md-9 input-value" value="时间聚合'+ aggs_row +'">' +
                 '</div></div>' +
                 '<div class="col-md-6 input-form"><label class="col-md-3 input-label" for="aggs-type' + aggs_row + '">聚合类型:</label>' +
                 '<select class="col-md-8 input-value" id="aggs-type' + aggs_row + '" onchange="aggsChange(this)">' +
@@ -355,6 +359,8 @@
         aggs_row++;
     }
     $(document).ready(function () {
+        var container = $('#result');
+        container.hide();
 
         var start_time = DateAdd("d ", -17, setStartDay(new Date()));
         var end_time = DateAdd("d ", -2, setEndDay(new Date()));
@@ -477,11 +483,11 @@
                         //var container = document.getElementById("result");
 
                         var container = $('#result');
-                        container.empty();
-
-                        var editor = new JSONEditor(container[0]);
-                        // set json
-                        editor.set(result);
+                        var query_result_editor = ace.edit("result");
+                        query_result_editor.setTheme("ace/theme/monokai");
+                        query_result_editor.getSession().setMode("ace/mode/json");
+                        query_result_editor.setValue(JSON.stringify(result, null, '\t'))
+                        container.show();
                     });
                 }
         );

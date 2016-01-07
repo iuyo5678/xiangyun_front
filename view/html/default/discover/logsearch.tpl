@@ -50,7 +50,7 @@
                     <div>
                         <p id="result-desc"></p>
                     </div>
-                    <div id="result">
+                    <div class="editor" id="result">
                     </div>
                 </div>
             </div>
@@ -93,33 +93,16 @@
                         var desc_container = $('#result-desc');
                         desc_container.text(desp);
                         var container = $('#result');
-                        container.empty();
-
-                        var editor = new JSONEditor(container[0]);
-                        // set json
-                        editor.set(result);
+                        var container = $('#query-test-result');
+                        var query_result_editor = ace.edit("result");
+                        query_result_editor.setTheme("ace/theme/monokai");
+                        query_result_editor.getSession().setMode("ace/mode/json");
+                        query_result_editor.setValue(JSON.stringify(result, null, '\t'))
+                        container.show();
 
                     });
 
                 }
         );
-        /*
-        var container = document.getElementById("result");
-        var editor = new JSONEditor(container);
-
-        // set json
-        var json = {
-            "Array": [1, 2, 3],
-            "Boolean": true,
-            "Null": null,
-            "Number": 123,
-            "Object": {"a": "b", "c": "d"},
-            "String": "Hello World"
-        };
-        editor.set(json);
-
-        // get json
-        var json = editor.get();
-        */
     });
 </script>

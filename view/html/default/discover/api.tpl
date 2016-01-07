@@ -1,5 +1,4 @@
 <?php echo $header; ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js" type="text/javascript" charset="utf-8"></script>
 <div class="container">
     <div class="row">
         <div class="statistics-container">
@@ -89,6 +88,10 @@
                         </div>
                         <label class="input-label" for="query-editor">处理语句:</label>
                         <div class="editor" id="process-editor">#你可以在这里写你的结果处理程序
+#函数名称必须为process_result(data)
+#包含一个处理参数,里面是传入的数据,pythondict结构
+def process_result(data):
+    return data
                         </div>
                         <div class="row">
                             <div>
