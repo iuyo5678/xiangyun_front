@@ -2,8 +2,9 @@
  * Created by zhangguhua on 15/12/7.
  */
 
-function build_query(start, end, query_str, interval) {
+function build_query(start_time, end_time, query_str, statistics, aggs) {
     query_str = query_str || '*';
+
     var query = {
         "query": {
             "filtered": {
@@ -19,8 +20,8 @@ function build_query(start, end, query_str, interval) {
                             {
                                 "range": {
                                     "@timestamp": {
-                                        "gte": start,
-                                        "lte": end
+                                        "gte": start_time,
+                                        "lte": end_time
                                     }
                                 }
                             }
@@ -29,39 +30,50 @@ function build_query(start, end, query_str, interval) {
                     }
                 }
             }
-        },
-        "aggs": {
-            "statistics": {
-                "date_histogram": {
-                    "field": "@timestamp",
-                    "interval": interval,
-                    "time_zone": "Asia/Shanghai",
-                    "min_doc_count": 0,
-                    "extended_bounds": {
-                        "min": start,
-                        "max": end
-                    }
-                },
-                "aggs": {
-                    "PV": {
-                        "sum": {
-                            "script": "doc['disp_statistics.wz_weixiusimple'].value + doc['disp_statistics.wz_weixiuweak'].value + doc['disp_statistics.wz_banjiasimple'].value + doc['disp_statistics.wz_banjiaweak'].value + doc['disp_statistics.wz_baojiesimple'].value + doc['disp_statistics.wz_baojieweak'].value + doc['disp_statistics.wz_pinpai'].value + doc['disp_statistics.wz_bdoor'].value + doc['disp_statistics.wz_hy_multi'].value"
-                        }
-                    },
-                    "Click": {
-                        "sum": {
-                            "script": "doc['clk_statistics.wz_weixiusimple'].value + doc['clk_statistics.wz_weixiuweak'].value + doc['clk_statistics.wz_banjiasimple'].value + doc['clk_statistics.wz_banjiaweak'].value + doc['clk_statistics.wz_baojiesimple'].value + doc['clk_statistics.wz_baojieweak'].value + doc['clk_statistics.wz_pinpai'].value + doc['clk_statistics.wz_bdoor'].value + doc['clk_statistics.wz_hy_multi'].value"
-                        }
-                    },
-                    "UV": {
-                        "cardinality": {
-                            "field": "baiduid"
-                        }
-                    }
-                }
-            }
         }
     };
+    var last_aggs =  false;
+    var aggs_result = {};
+
+    for(var index=statistics.length; index > 0; index--){
+        var statistics_type = statistics[index-1].type;
+        var statistics_name = index.toString();
+        if(statistics[index-1].type == "count"){
+            continue
+        }else{
+            var temp_agg = {};
+            temp_agg[statistics_type] = {};
+            temp_agg[statistics_type]['field'] = statistics[index-1].field;
+            aggs_result[statistics_name] = temp_agg;
+        }
+    }
+
+    for(var index=aggs.length; index > 0; index--){
+        var aggs_type = aggs[index-1].type;
+        var aggs_name = index.toString();
+        var aggs_temp = {};
+        if(aggs[index-1].type == "date_histogram"){
+            aggs_temp[aggs_name] = {
+                    "date_histogram": {
+                        "field": aggs[index-1].field,
+                        "interval":aggs[index-1].interval,
+                        "time_zone": "Asia/Shanghai",
+                        "min_doc_count": 0,
+                }
+            }
+        }else{
+            aggs_temp[aggs_name] = {};
+            aggs_temp[aggs_name][aggs_type] = {};
+            aggs_temp[aggs_name][aggs_type]['field'] = aggs[index-1].field;
+          }
+
+        if (!isEmpty(aggs_result)){
+            aggs_temp[aggs_name]['aggs'] = aggs_result;
+        }
+
+        aggs_result= aggs_temp;
+    }
+    query.aggs = aggs_result;
     return query;
 }
 

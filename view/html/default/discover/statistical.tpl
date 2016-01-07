@@ -14,12 +14,12 @@
                             <div class="col-md-6 input-form">
                                 <label class="col-md-3 input-label" for="log-sorce">日志来源:</label>
                                 <select class="col-md-8 input-value" id="log-source">
-                                    <option value="logstash-search">检索日志</option>
-                                    <option value="logstash-click-search" selected>检索点击日志</option>
-                                    <option value="logstash-disp-search">检索展现</option>
-                                    <option value="logstash-middle-hy">黄页中间页</option>
-                                    <option value="logstash-middle-bdoor">订单分发中间页</option>
-                                    <option value="logstash-bdoor-order">订单分发订单信息</option>
+                                    <option value="logstash-search-*">检索日志</option>
+                                    <option value="logstash-click-search-*" selected>检索点击日志</option>
+                                    <option value="logstash-disp-search-*">检索展现</option>
+                                    <option value="logstash-middle-hy-*">黄页中间页</option>
+                                    <option value="logstash-middle-bdoor-*">订单分发中间页</option>
+                                    <option value="logstash-bdoor-order-*">订单分发订单信息</option>
                                 </select>
                             </div>
                             <div class="col-md-6 input-form">
@@ -52,8 +52,8 @@
                                             <option value="median">中位数</option>
                                             <option value="min">最小值</option>
                                             <option value="max">最大值</option>
-                                            <option value="standard_deviation">标准差</option>
-                                            <option value="unique_count">去重计数</option>
+                                            <option value="extended_bounds">标准差</option>
+                                            <option value="cardinality">去重计数</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 input-form" id="statistic-filed-input<?php echo $statistics_row; ?>" style="display: none">
@@ -185,7 +185,7 @@
                     select_con.append($("<option>").attr('value', result[item]).text(result[item]));
                 }
             });
-        }else if(changeObject.value == "unique_count"){
+        }else if(changeObject.value == "cardinality"){
             $(field_id).show();
             var log_source = $("#log-source").val();
             var para_array = get_all_parameters(log_source);
@@ -199,7 +199,7 @@
                 }
                 var select_con = $(select_field_id);
                 select_con.empty();
-                select_con.attr('type', "str")
+                select_con.attr('type', "str");
                 for (var item in result) {
                     select_con.append($("<option>").attr('value', result[item]).text(result[item]));
                 }
@@ -418,12 +418,36 @@
 
         $("#log-search").click(
                 function () {
-                    var log_top = $("#log-top").val();
                     var log_source = $("#log-source").val();
                     var query = $("#log-query").val();
-                    var log_data = get_log_data(log_source, start_time, end_time, log_top, query);
+                    var statistics = [];
+                    var statistics_obj = $('#statistics tbody tr');
+                    for(var index=0; index < statistics_obj.length; index++){
+                        var jquery_object = $(statistics_obj[index]);
+                        var select_cons = jquery_object.children('td:first').children('div').children('select');
+                        var type = $(select_cons[0]).val();
+                        if (type != "count"){
+                            var field = $(select_cons[1]).val();
+                        }
+                        statistics.push({type, field});
+                    }
+
+                    var aggs = [];
+                    var aggs_obj = $('#aggs tbody tr');
+                    for(var index=0; index < aggs_obj.length; index++){
+                        var jquery_object = $(aggs_obj[index]);
+                        var select_cons = jquery_object.children('td:first').children('div').children('select');
+                        var type = $(select_cons[0]).val();
+                        var field = $(select_cons[1]).val();
+                        var interval = $(select_cons[2]).val();
+                        aggs.push({type, field, interval});
+                    }
+
+                    var elas_query = build_query(start_time, end_time, query, statistics, aggs);
+
+                    var log_data = get_log_statistics(log_source, start_time, end_time, elas_query);
                     log_data.then(function (resp) {
-                        result = resp.hits.hits;
+                        result = resp.aggregations;
                         //var container = document.getElementById("result");
 
                         var container = $('#result');

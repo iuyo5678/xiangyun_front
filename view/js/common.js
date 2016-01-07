@@ -23,6 +23,20 @@ function getURLVar(key) {
 }
 
 
+/*
+ * 检测对象是否是空对象(不包含任何可读属性)。
+ * 方法既检测对象本身的属性，也检测从原型继承的属性(因此没有使hasOwnProperty)。
+ */
+function isEmpty(obj)
+{
+    for (var name in obj)
+    {
+        return false;
+    }
+    return true;
+};
+
+
 
 function syntaxHighlight(json) {
     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -1712,5 +1726,20 @@ function get_log_data(log_source, start_time, end_time, log_top, query) {
         });
 
     return esp
+}
 
+function get_log_statistics(log_source, start_time, end_time, query) {
+
+    start_time = start_time || DateAdd("d ", -17, setStartDay(new Date())).getTime();
+    end_time = end_time  || DateAdd("d ", -2, setEndDay(new Date())).getTime();
+
+    var elc_client = new elasticsearch.Client({hosts: data_server});
+    var result;
+    esp = elc_client.search({
+        size: 0,
+        index: log_source,
+        body: query
+    });
+
+    return esp
 }
