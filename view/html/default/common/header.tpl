@@ -96,6 +96,7 @@
                         <li><a href="<?php echo $discover_gmv; ?>">gmv查询</a></li>
                         <li><a href="<?php echo $discover_logsearch; ?>">日志查询</a></li>
                         <li><a href="<?php echo $discover_statistical; ?>">统计分析</a></li>
+                        <li><a href="<?php echo $discover_api; ?>">自助分析查询</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

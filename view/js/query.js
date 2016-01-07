@@ -37,7 +37,7 @@ function build_query(start_time, end_time, query_str, statistics, aggs) {
 
     for(var index=statistics.length; index > 0; index--){
         var statistics_type = statistics[index-1].type;
-        var statistics_name = index.toString();
+        var statistics_name = statistics[index-1].name;
         if(statistics[index-1].type == "count"){
             continue
         }else{
@@ -50,7 +50,7 @@ function build_query(start_time, end_time, query_str, statistics, aggs) {
 
     for(var index=aggs.length; index > 0; index--){
         var aggs_type = aggs[index-1].type;
-        var aggs_name = index.toString();
+        var aggs_name = aggs[index-1].name;
         var aggs_temp = {};
         if(aggs[index-1].type == "date_histogram"){
             aggs_temp[aggs_name] = {

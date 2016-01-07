@@ -43,6 +43,12 @@
                             <tbody>
                             <tr id="statistics-row<?php echo $statistics_row; ?>">
                                 <td style="width: 90%">
+                                    <div>
+                                        <div class="col-md-6 input-form">
+                                            <label class="col-md-2 input-label" for="statistic-name<?php echo $statistics_row; ?>">统计名称:</label>
+                                            <input id="statistic-name<?php echo $statistics_row; ?>" class="col-md-9 input-value" value="日志条目">
+                                        </div>
+                                    </div>
                                     <div class="col-md-6 input-form">
                                         <label class="col-md-3 input-label" for="statistic-type<?php echo $statistics_row; ?>">统计类型:</label>
                                         <select class="col-md-8 input-value" type="statistic-type-select" id="statistic-type<?php echo $statistics_row; ?>" onchange="statisticalChange(this)">
@@ -93,6 +99,12 @@
                             <tbody>
                             <tr id="aggs-row<?php echo $aggs_row; ?>">
                                 <td style="width: 90%">
+                                    <div>
+                                        <div class="col-md-6 input-form">
+                                            <label class="col-md-2 input-label" for="aggs-name<?php echo $aggs_row; ?>">聚合名称:</label>
+                                            <input id="aggs-name<?php echo $aggs_row; ?>" class="col-md-9 input-value" value="时间聚合">
+                                        </div>
+                                    </div>
                                     <div class="col-md-6 input-form">
                                         <label class="col-md-3 input-label" for="aggs-type<?php echo $aggs_row; ?>">聚合类型:</label>
                                         <select class="col-md-8 input-value" id="aggs-type<?php echo $aggs_row; ?>" onchange="aggsChange(this)">
@@ -266,7 +278,12 @@
 
     function addStatistics() {
         html = '<tr id="statistics-row'+ statistics_row +'">'
-        html += '<td style="width: 90%"><div class="col-md-6 input-form">' +
+        html += '<td style="width: 90%">' +
+                '<div><div class="col-md-6 input-form">' +
+                '<label class="col-md-2 input-label" for="statistic-name' + statistics_row + '">统计名称:</label>' +
+                '<input id="statistic-name' + statistics_row + '" class="col-md-9 input-value" value="日志条目">' +
+                '</div></div>' +
+                '<div class="col-md-6 input-form">' +
                 '<label class="col-md-3 input-label" for="statistic-type' + statistics_row + '">统计类型:</label>' +
                 '<select class="col-md-8 input-value" type="statistic-type-select" id="statistic-type' + statistics_row + '" onchange="statisticalChange(this)"><option value="count" selected>日志条目</option>' +
                 '<option value="avg">平均值</option>' +
@@ -289,7 +306,12 @@
     }
     function addAggs() {
         html = '<tr id="aggs-row' + aggs_row + '">';
-        html += '<td style="width: 90%"><div class="col-md-6 input-form"><label class="col-md-3 input-label" for="aggs-type' + aggs_row + '">聚合类型:</label>' +
+        html += '<td style="width: 90%">' +
+                '<div><div class="col-md-6 input-form">' +
+                '<label class="col-md-2 input-label" for="aggs-name'+ aggs_row +'">聚合名称:</label>' +
+                '<input id="aggs-name'+ aggs_row +'" class="col-md-9 input-value" value="时间聚合">' +
+                '</div></div>' +
+                '<div class="col-md-6 input-form"><label class="col-md-3 input-label" for="aggs-type' + aggs_row + '">聚合类型:</label>' +
                 '<select class="col-md-8 input-value" id="aggs-type' + aggs_row + '" onchange="aggsChange(this)">' +
                 '<option value="date_histogram" selected>时间聚合</option>' +
                 '<option value="terms">字段聚合</option>' +
@@ -425,11 +447,13 @@
                     for(var index=0; index < statistics_obj.length; index++){
                         var jquery_object = $(statistics_obj[index]);
                         var select_cons = jquery_object.children('td:first').children('div').children('select');
+                        var input_cons = jquery_object.children('td:first').children('div').children('div').children('input');
+                        var name = $(input_cons[0]).val();
                         var type = $(select_cons[0]).val();
                         if (type != "count"){
                             var field = $(select_cons[1]).val();
                         }
-                        statistics.push({type, field});
+                        statistics.push({name, type, field});
                     }
 
                     var aggs = [];
@@ -437,10 +461,12 @@
                     for(var index=0; index < aggs_obj.length; index++){
                         var jquery_object = $(aggs_obj[index]);
                         var select_cons = jquery_object.children('td:first').children('div').children('select');
+                        var input_cons = jquery_object.children('td:first').children('div').children('div').children('input');
+                        var name = $(input_cons[0]).val();
                         var type = $(select_cons[0]).val();
                         var field = $(select_cons[1]).val();
                         var interval = $(select_cons[2]).val();
-                        aggs.push({type, field, interval});
+                        aggs.push({name, type, field, interval});
                     }
 
                     var elas_query = build_query(start_time, end_time, query, statistics, aggs);

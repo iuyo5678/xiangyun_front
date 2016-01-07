@@ -33,4 +33,35 @@ class ControllerApiDataService extends Controller {
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput($json);
     }
+    public function process()
+    {
+        if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
+            $input_str =  $this->request->post['process_input'];
+            $process_type = $this->request->post['process_type'];
+            $process_func = $this->request->post['process_func'];
+            $json = array();
+
+            $json['successe'] = "success";
+            $json['process_type'] = $process_type;
+            $json['process_func'] = $process_func;
+
+            $process_func = '#!/usr/bin/env python\n
+# -*- coding: utf-8 -*-
+'.$process_func;
+
+            $procss_file = fopen("/Applications/XAMPP/htdocs/xiangyun_front/controller/api/process_func.py", "w") or die("Unable to open file!");
+            fwrite($procss_file, htmlspecialchars_decode($process_func));
+            fclose($procss_file);
+
+
+            $command = escapeshellcmd('/Applications/XAMPP/htdocs/xiangyun_front/controller/api/data_process_wrap.py ');
+            $output = shell_exec($command);
+
+            $json['result'] = $output;
+
+
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+        }
+    }
 }
