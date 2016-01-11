@@ -38,6 +38,7 @@
 
     <!-- ECharts单文件引入 -->
     <script src="http://echarts.baidu.com/doc/example/www2/js/echarts-all.js"></script>
+    <script src="view/js/json-to-table.js" type="text/javascript"></script>
 
     <link href="view/css/main.css" rel="stylesheet">
     <link href="view/css/daterangepicker-bs3.css" rel="stylesheet">

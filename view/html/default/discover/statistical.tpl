@@ -45,13 +45,19 @@
                                 <td style="width: 90%">
                                     <div>
                                         <div class="col-md-6 input-form">
-                                            <label class="col-md-2 input-label" for="statistic-name<?php echo $statistics_row; ?>">统计名称:</label>
-                                            <input id="statistic-name<?php echo $statistics_row; ?>" class="col-md-9 input-value" value="日志条目<?php echo $statistics_row; ?>">
+                                            <label class="col-md-2 input-label"
+                                                   for="statistic-name<?php echo $statistics_row; ?>">统计名称:</label>
+                                            <input id="statistic-name<?php echo $statistics_row; ?>"
+                                                   class="col-md-9 input-value"
+                                                   value="日志条目<?php echo $statistics_row; ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-6 input-form">
-                                        <label class="col-md-3 input-label" for="statistic-type<?php echo $statistics_row; ?>">统计类型:</label>
-                                        <select class="col-md-8 input-value" type="statistic-type-select" id="statistic-type<?php echo $statistics_row; ?>" onchange="statisticalChange(this)">
+                                        <label class="col-md-3 input-label"
+                                               for="statistic-type<?php echo $statistics_row; ?>">统计类型:</label>
+                                        <select class="col-md-8 input-value" type="statistic-type-select"
+                                                id="statistic-type<?php echo $statistics_row; ?>"
+                                                onchange="statisticalChange(this)">
                                             <option value="count" selected>日志条目</option>
                                             <option value="avg">平均值</option>
                                             <option value="sum">求和</option>
@@ -62,9 +68,12 @@
                                             <option value="cardinality">去重计数</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-6 input-form" id="statistic-filed-input<?php echo $statistics_row; ?>" style="display: none">
-                                        <label class="col-md-3 input-label" for="statistic-field<?php echo $statistics_row; ?>">选择字段:</label>
-                                        <select class="col-md-8 input-value field-select" type="number" id="statistic-field<?php echo $statistics_row; ?>">
+                                    <div class="col-md-6 input-form"
+                                         id="statistic-filed-input<?php echo $statistics_row; ?>" style="display: none">
+                                        <label class="col-md-3 input-label"
+                                               for="statistic-field<?php echo $statistics_row; ?>">选择字段:</label>
+                                        <select class="col-md-8 input-value field-select" type="number"
+                                                id="statistic-field<?php echo $statistics_row; ?>">
                                         </select>
                                     </div>
                                 </td>
@@ -102,23 +111,22 @@
                                     <div>
                                         <div class="col-md-6 input-form">
                                             <label class="col-md-2 input-label" for="aggs-name<?php echo $aggs_row; ?>">聚合名称:</label>
-                                            <input id="aggs-name<?php echo $aggs_row; ?>" class="col-md-9 input-value" value="时间聚合<?php echo $aggs_row; ?>">
+                                            <input id="aggs-name<?php echo $aggs_row; ?>" class="col-md-9 input-value"
+                                                   value="时间聚合<?php echo $aggs_row; ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-6 input-form">
                                         <label class="col-md-3 input-label" for="aggs-type<?php echo $aggs_row; ?>">聚合类型:</label>
-                                        <select class="col-md-8 input-value" id="aggs-type<?php echo $aggs_row; ?>" onchange="aggsChange(this)">
+                                        <select class="col-md-8 input-value" id="aggs-type<?php echo $aggs_row; ?>"
+                                                onchange="aggsChange(this)">
                                             <option value="date_histogram" selected>时间聚合</option>
-                                            <!--
-                                            <option value="histogram">数值聚合</option>
-                                            <option value="range">数值范围聚合</option>
-                                            <option value="date_range">时间范围聚合</option> -->
                                             <option value="terms">字段聚合</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 input-form" id="input-aggs-field<?php echo $aggs_row; ?>">
                                         <label class="col-md-3 input-label" for="aggs-field<?php echo $aggs_row; ?>">选择字段:</label>
-                                        <select class="col-md-8 input-value field-select" type="date" id="aggs-field<?php echo $aggs_row; ?>"></select>
+                                        <select class="col-md-8 input-value field-select" type="date"
+                                                id="aggs-field<?php echo $aggs_row; ?>"></select>
                                     </div>
                                     <div class="col-md-6 input-form" id="input-aggs-interval<?php echo $aggs_row; ?>">
                                         <label class="col-md-3 input-label" for="aggs-interval<?php echo $aggs_row; ?>">时间间隔:</label>
@@ -159,23 +167,33 @@
                     </div>
                 </div>
             </div>
-            <div class="query-result">
-                <div class="editor" id="result">
+            <div id="query-result">
+                <div id="result-con">
+                </div>
+                <div class="row">
+                    <div id="result-option" class="col-md-offset-3  col-md-6 input-form">
+                        <button class="result-option" id="result-source">原始数据</button>
+                        <button class="result-option" id="result-table">表格数据</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 <?php echo $footer; ?>
 <script>
-    var aggs_row = <?php echo $aggs_row; ?>;
+    var aggs_row =<?php echo  $aggs_row; ?>;
     var statistics_row = <?php echo $statistics_row; ?>;
+
+    var aggs = [];
+    var statistics = [];
+    var statistic_result = null;
+
 
     function statisticalChange(changeObject) {
         console.log("this is test");
         var id_name = changeObject.id;
-        var statistic_row = (id_name.substr(id_name.length-1));
+        var statistic_row = (id_name.substr(id_name.length - 1));
         var field_id = "#statistic-filed-input" + statistic_row;
         var select_field_id = "#statistic-field" + statistic_row;
         if (changeObject.value != "count" && changeObject.value != "unique_count") {
@@ -197,7 +215,7 @@
                     select_con.append($("<option>").attr('value', result[item]).text(result[item]));
                 }
             });
-        }else if(changeObject.value == "cardinality"){
+        } else if (changeObject.value == "cardinality") {
             $(field_id).show();
             var log_source = $("#log-source").val();
             var para_array = get_all_parameters(log_source);
@@ -219,18 +237,18 @@
         } else {
             $(field_id).hide();
         }
-        var show_text = $('#statistic-type' + statistic_row + ' option[value=\''+ changeObject.value +'\']').text().trim()
-        $('#statistic-name' + statistic_row).attr('value',show_text + statistic_row);
+        var show_text = $('#statistic-type' + statistic_row + ' option[value=\'' + changeObject.value + '\']').text().trim()
+        $('#statistic-name' + statistic_row).attr('value', show_text + statistic_row);
     }
     function aggsChange(changeObject) {
         console.log("this is test");
         var id_name = changeObject.id;
-        var aggs_row = (id_name.substr(id_name.length-1));
-        var aggs_con = $('#aggs-row'+ aggs_row + ' td:first');
+        var aggs_row = (id_name.substr(id_name.length - 1));
+        var aggs_con = $('#aggs-row' + aggs_row + ' td:first');
         if (changeObject.value == "date_histogram") {
-            html = '<div class="col-md-6 input-form" id="input-aggs-interval'+ aggs_row +'"> ' +
-                    '<label class="col-md-3 input-label" for="aggs-interval'+ aggs_row +'">时间间隔:</label>' +
-                    '<select class="col-md-8 input-value" id="aggs-interval'+ aggs_row +'">' +
+            html = '<div class="col-md-6 input-form" id="input-aggs-interval' + aggs_row + '"> ' +
+                    '<label class="col-md-3 input-label" for="aggs-interval' + aggs_row + '">时间间隔:</label>' +
+                    '<select class="col-md-8 input-value" id="aggs-interval' + aggs_row + '">' +
                     '<option value="3h">3小时</option>' +
                     '<option value="6h">6小时</option>' +
                     '<option value="12h">12小时</option>' +
@@ -239,7 +257,7 @@
             var field_id = '#aggs-field' + aggs_row;
             var log_source = $("#log-source").val();
             var para_array = get_all_parameters(log_source);
-            $('#aggs-name' + aggs_row).attr('value',"时间聚合" + aggs_row);
+            $('#aggs-name' + aggs_row).attr('value', "时间聚合" + aggs_row);
             para_array.then(function (resp) {
                 var data = JSON.parse(resp.hits.hits[0]._source.fields);
                 var result = [];
@@ -255,7 +273,7 @@
                 }
             });
 
-        }else if (changeObject.value == "terms"){
+        } else if (changeObject.value == "terms") {
             $('#input-aggs-interval' + aggs_row).remove();
             var field_id = '#aggs-field' + aggs_row;
             var log_source = $("#log-source").val();
@@ -281,7 +299,7 @@
     }
 
     function addStatistics() {
-        html = '<tr id="statistics-row'+ statistics_row +'">'
+        html = '<tr id="statistics-row' + statistics_row + '">'
         html += '<td style="width: 90%">' +
                 '<div><div class="col-md-6 input-form">' +
                 '<label class="col-md-2 input-label" for="statistic-name' + statistics_row + '">统计名称:</label>' +
@@ -293,7 +311,7 @@
                 '<option value="avg">平均值</option>' +
                 '<option value="sum">求和</option>' +
                 '<option value="median">中位数</option>' +
-                '<option value="min">最小值</option>'+
+                '<option value="min">最小值</option>' +
                 '<option value="max">最大值</option>' +
                 '<option value="standard_deviation">标准差</option>' +
                 '<option value="unique_count">去重计数</option></select></div>' +
@@ -312,20 +330,20 @@
         html = '<tr id="aggs-row' + aggs_row + '">';
         html += '<td style="width: 90%">' +
                 '<div><div class="col-md-6 input-form">' +
-                '<label class="col-md-2 input-label" for="aggs-name'+ aggs_row +'">聚合名称:</label>' +
-                '<input id="aggs-name'+ aggs_row +'" class="col-md-9 input-value" value="时间聚合'+ aggs_row +'">' +
+                '<label class="col-md-2 input-label" for="aggs-name' + aggs_row + '">聚合名称:</label>' +
+                '<input id="aggs-name' + aggs_row + '" class="col-md-9 input-value" value="时间聚合' + aggs_row + '">' +
                 '</div></div>' +
                 '<div class="col-md-6 input-form"><label class="col-md-3 input-label" for="aggs-type' + aggs_row + '">聚合类型:</label>' +
                 '<select class="col-md-8 input-value" id="aggs-type' + aggs_row + '" onchange="aggsChange(this)">' +
                 '<option value="date_histogram" selected>时间聚合</option>' +
                 '<option value="terms">字段聚合</option>' +
                 '</select></div>' +
-                '<div class="col-md-6 input-form" id="input-aggs-field'+ aggs_row +'">' +
-                '<label class="col-md-3 input-label" for="aggs-field'+ aggs_row +'">选择字段:</label>' +
-                '<select class="col-md-8 input-value" id="aggs-field'+ aggs_row +'"></select>' +
-                '</div><div class="col-md-6 input-form" id="input-aggs-interval'+ aggs_row +'"> ' +
-                '<label class="col-md-3 input-label" for="aggs-interval'+ aggs_row +'">时间间隔:</label>' +
-                '<select class="col-md-8 input-value field-select" type="date" id="aggs-interval'+ aggs_row +'">' +
+                '<div class="col-md-6 input-form" id="input-aggs-field' + aggs_row + '">' +
+                '<label class="col-md-3 input-label" for="aggs-field' + aggs_row + '">选择字段:</label>' +
+                '<select class="col-md-8 input-value" id="aggs-field' + aggs_row + '"></select>' +
+                '</div><div class="col-md-6 input-form" id="input-aggs-interval' + aggs_row + '"> ' +
+                '<label class="col-md-3 input-label" for="aggs-interval' + aggs_row + '">时间间隔:</label>' +
+                '<select class="col-md-8 input-value field-select" type="date" id="aggs-interval' + aggs_row + '">' +
                 '<option value="3h">3小时</option>' +
                 '<option value="6h">6小时</option>' +
                 '<option value="12h">12小时</option>' +
@@ -358,10 +376,44 @@
 
         aggs_row++;
     }
-    $(document).ready(function () {
-        var container = $('#result');
-        container.hide();
 
+    function draw_data(result, flag) {
+        var container = $('#result-con');
+        container.empty();
+        container.append('<div class="editor" id="result"></div>');
+        var aggs_name = aggs[0].name;
+        var aggs_type = aggs[0].type;
+        if (flag == "source") {
+            var query_result_editor = ace.edit("result");
+            query_result_editor.setTheme("ace/theme/monokai");
+            query_result_editor.getSession().setMode("ace/mode/json");
+            query_result_editor.setValue(JSON.stringify(result, null, '\t'));
+        } else {
+            format = d3.time.format("%m月%d日%H时");
+            result.forEach(function (d) {
+                if (aggs_type == "date_histogram") {
+                    var log_date = new Date(d.key_as_string);
+                    d.time = format(log_date);
+                    delete d.key_as_string;
+                    delete d.key
+                }
+                for (var aggs_index = 1; aggs_index < aggs.length; aggs_index++) {
+                    d[aggs[aggs_index].name] = d[aggs[aggs_index].name].buckets;
+                }
+            });
+
+            d3.select("#result").selectAll("table")
+                    .data([result])
+                    .enter().append("table")
+                    .attr('class', 'result-table')
+                    .call(recurse);
+        }
+        $('#query-result').css('display', 'block');
+
+
+    }
+    $(document).ready(function () {
+        var container = $('#query-result').css('display', 'none');
         var start_time = DateAdd("d ", -17, setStartDay(new Date()));
         var end_time = DateAdd("d ", -2, setEndDay(new Date()));
         var date_ranger = $('#log-date-ranger');
@@ -400,16 +452,19 @@
 
         $("#log-source").change(
                 function () {
+                    statistic_result = null;
+                    aggs = [];
+                    statistics = [];
                     var select_cons = $('.field-select');
                     select_cons.empty()
                     var log_source = $("#log-source").val();
                     var para_array = get_all_parameters(log_source);
                     para_array.then(function (resp) {
                         var data = JSON.parse(resp.hits.hits[0]._source.fields);
-                        for(var index = 0 ; index < select_cons.length; index++) {
+                        for (var index = 0; index < select_cons.length; index++) {
                             var result = [];
                             var jquery_object = $(select_cons[index]);
-                            if (jquery_object.attr('type') == "str"){
+                            if (jquery_object.attr('type') == "str") {
                                 for (var i = 0; i < data.length; i++) {
                                     if (data[i].type != 'date' && data[i].name[0] != "_" && data[i].name.substring(0, 5) != "geoip")
                                         result.push(data[i].name)
@@ -418,7 +473,7 @@
                                     jquery_object.append($("<option>").attr('value', result[item]).text(result[item]));
                                 }
 
-                            } else if (jquery_object.attr('type') == "date"){
+                            } else if (jquery_object.attr('type') == "date") {
                                 for (var i = 0; i < data.length; i++) {
                                     if (data[i].type == 'date' && data[i].name[0] != "_" && data[i].name.substring(0, 5) != "geoip")
                                         result.push(data[i].name)
@@ -427,7 +482,7 @@
                                     jquery_object.append($("<option>").attr('value', result[item]).text(result[item]));
                                 }
 
-                            } else if (jquery_object.attr('type') == "number"){
+                            } else if (jquery_object.attr('type') == "number") {
                                 for (var i = 0; i < data.length; i++) {
                                     if (data[i].type == 'number' && data[i].name[0] != "_" && data[i].name.substring(0, 5) != "geoip")
                                         result.push(data[i].name)
@@ -436,7 +491,7 @@
                                     jquery_object.append($("<option>").attr('value', result[item]).text(result[item]));
                                 }
 
-                            }else {
+                            } else {
 
                             }
                         }
@@ -446,25 +501,26 @@
 
         $("#log-search").click(
                 function () {
+                    statistic_result = null;
+                    aggs = [];
+                    statistics = [];
                     var log_source = $("#log-source").val();
                     var query = $("#log-query").val();
-                    var statistics = [];
                     var statistics_obj = $('#statistics tbody tr');
-                    for(var index=0; index < statistics_obj.length; index++){
+                    for (var index = 0; index < statistics_obj.length; index++) {
                         var jquery_object = $(statistics_obj[index]);
                         var select_cons = jquery_object.children('td:first').children('div').children('select');
                         var input_cons = jquery_object.children('td:first').children('div').children('div').children('input');
                         var name = $(input_cons[0]).val();
                         var type = $(select_cons[0]).val();
-                        if (type != "count"){
+                        if (type != "count") {
                             var field = $(select_cons[1]).val();
                         }
                         statistics.push({name, type, field});
                     }
 
-                    var aggs = [];
                     var aggs_obj = $('#aggs tbody tr');
-                    for(var index=0; index < aggs_obj.length; index++){
+                    for (var index = 0; index < aggs_obj.length; index++) {
                         var jquery_object = $(aggs_obj[index]);
                         var select_cons = jquery_object.children('td:first').children('div').children('select');
                         var input_cons = jquery_object.children('td:first').children('div').children('div').children('input');
@@ -479,17 +535,20 @@
 
                     var log_data = get_log_statistics(log_source, start_time, end_time, elas_query);
                     log_data.then(function (resp) {
-                        result = resp.aggregations;
-                        //var container = document.getElementById("result");
-
-                        var container = $('#result');
-                        var query_result_editor = ace.edit("result");
-                        query_result_editor.setTheme("ace/theme/monokai");
-                        query_result_editor.getSession().setMode("ace/mode/json");
-                        query_result_editor.setValue(JSON.stringify(result, null, '\t'))
-                        container.show();
+                        var aggs_name = aggs[0].name;
+                        var aggs_type = aggs[0].type;
+                        statistic_result = resp.aggregations[aggs_name].buckets;
+                        draw_data(statistic_result, 'source');
                     });
                 }
         );
+        $("#result-source").click(
+                function () {
+                    draw_data(statistic_result, 'source');
+                });
+        $("#result-table").click(
+                function () {
+                    draw_data(statistic_result, 'table');
+                });
     });
 </script>

@@ -78,6 +78,107 @@ function build_query(start_time, end_time, query_str, statistics, aggs) {
 }
 
 
+function build_only_click_query(start, end, query_str, interval, cards) {
+    query_str = query_str || '*';
+
+    var query = {
+        "query": {
+            "filtered": {
+                "query": {
+                    "query_string": {
+                        "analyze_wildcard": true,
+                        "query": query_str
+                    }
+                },
+                "filter": {
+                    "bool": {
+                        "must": [
+                            {
+                                "range": {
+                                    "@timestamp": {
+                                        "gte": start,
+                                        "lte": end
+                                    }
+                                }
+                            }
+                        ],
+                        "must_not": []
+                    }
+                }
+            }
+        },
+        "aggs": {
+            "statistics": {
+                "date_histogram": {
+                    "field": "@timestamp",
+                    "interval": interval,
+                    "time_zone": "Asia/Shanghai",
+                    "min_doc_count": 0,
+                    "extended_bounds": {
+                        "min": start,
+                        "max": end
+                    }
+                }
+            }
+        }
+    };
+    return query;
+}
+
+function build_only_pv_uv_query(start, end, query_str, interval, cards) {
+    query_str = query_str || '*';
+
+    var query = {
+        "query": {
+            "filtered": {
+                "query": {
+                    "query_string": {
+                        "analyze_wildcard": true,
+                        "query": query_str
+                    }
+                },
+                "filter": {
+                    "bool": {
+                        "must": [
+                            {
+                                "range": {
+                                    "@timestamp": {
+                                        "gte": start,
+                                        "lte": end
+                                    }
+                                }
+                            }
+                        ],
+                        "must_not": []
+                    }
+                }
+            }
+        },
+        "aggs": {
+            "statistics": {
+                "date_histogram": {
+                    "field": "@timestamp",
+                    "interval": interval,
+                    "time_zone": "Asia/Shanghai",
+                    "min_doc_count": 0,
+                    "extended_bounds": {
+                        "min": start,
+                        "max": end
+                    }
+                },
+                "aggs": {
+                    "UV": {
+                        "cardinality": {
+                            "field": "baiduid"
+                        }
+                    }
+                }
+            }
+        }
+    };
+    return query;
+}
+
 function build_pv_uv_query(start, end, query_str, interval, cards) {
     query_str = query_str || '*';
     var pv_query = "";
