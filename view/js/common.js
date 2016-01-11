@@ -36,6 +36,12 @@ function isEmpty(obj)
     return true;
 };
 
+/*
+ * 检测对象是否是否是object。
+ */
+function isObject(obj) {
+    return Object.prototype.toString.call(obj) === '[object Object]';
+}
 
 
 function syntaxHighlight(json) {

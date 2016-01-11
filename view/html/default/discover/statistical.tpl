@@ -64,7 +64,7 @@
                                             <option value="median">中位数</option>
                                             <option value="min">最小值</option>
                                             <option value="max">最大值</option>
-                                            <option value="extended_bounds">标准差</option>
+                                            <option value="extended_stats">标准差</option>
                                             <option value="cardinality">去重计数</option>
                                         </select>
                                     </div>
@@ -196,7 +196,7 @@
         var statistic_row = (id_name.substr(id_name.length - 1));
         var field_id = "#statistic-filed-input" + statistic_row;
         var select_field_id = "#statistic-field" + statistic_row;
-        if (changeObject.value != "count" && changeObject.value != "unique_count") {
+        if (changeObject.value != "count" && changeObject.value != "cardinality" ) {
             $(field_id).show();
             var log_source = $("#log-source").val();
             var para_array = get_all_parameters(log_source);
@@ -313,7 +313,7 @@
                 '<option value="median">中位数</option>' +
                 '<option value="min">最小值</option>' +
                 '<option value="max">最大值</option>' +
-                '<option value="standard_deviation">标准差</option>' +
+                '<option value="extended_stats">标准差</option>' +
                 '<option value="unique_count">去重计数</option></select></div>' +
                 '<div class="col-md-6 input-form" id="statistic-filed-input' + statistics_row + '" style="display: none">' +
                 '<label class="col-md-3 input-label" for="statistic-field' + statistics_row + '">选择字段:</label>' +
@@ -380,6 +380,7 @@
     function draw_data(result, flag) {
         var container = $('#result-con');
         container.empty();
+        $('#data_export').remove();
         container.append('<div class="editor" id="result"></div>');
         var aggs_name = aggs[0].name;
         var aggs_type = aggs[0].type;
@@ -389,28 +390,74 @@
             query_result_editor.getSession().setMode("ace/mode/json");
             query_result_editor.setValue(JSON.stringify(result, null, '\t'));
         } else {
-            format = d3.time.format("%m月%d日%H时");
-            result.forEach(function (d) {
-                if (aggs_type == "date_histogram") {
-                    var log_date = new Date(d.key_as_string);
-                    d.time = format(log_date);
-                    delete d.key_as_string;
-                    delete d.key
-                }
-                for (var aggs_index = 1; aggs_index < aggs.length; aggs_index++) {
-                    d[aggs[aggs_index].name] = d[aggs[aggs_index].name].buckets;
-                }
-            });
 
             d3.select("#result").selectAll("table")
                     .data([result])
                     .enter().append("table")
                     .attr('class', 'result-table')
                     .call(recurse);
+            $('.result-table').each(function () {
+                var $table = $(this);
+                var $button = $("<button class='result-option' id='data_export' type='button'>");
+                $button.text("导出数据");
+                $button.insertAfter($('#result-table'));
+                $button.click(function () {
+                    var csv = $table.table2CSV({
+                        delivery: 'value'
+                    });
+                    window.location.href = 'data:text/csv;charset=UTF-8,'
+                            + encodeURIComponent(csv);
+                });
+            });
         }
         $('#query-result').css('display', 'block');
 
 
+    }
+    function normalized(value){
+        if (value.hasOwnProperty('key_as_string')) {
+            if (value['key_as_string'].length == 29){
+            var log_date = new Date(value.key_as_string);
+            value.time = format(log_date);
+            delete value.key_as_string;
+            }
+        }
+        for (var k in value){
+            if (value.hasOwnProperty(k)) {
+                if(isObject(value[k]))
+                {
+                    if(value[k].hasOwnProperty('buckets')){
+                        value[k] = value[k]['buckets'];
+                    }
+                    normalized(value[k])
+                    if(value[k].hasOwnProperty('value')){
+                        value[k] = value[k]['value'];
+                    }
+                    if(value[k].hasOwnProperty('std_deviation_bounds')){
+                        value[k]['upper'] = value[k]['std_deviation_bounds']['upper'];
+                        value[k]['lower'] = value[k]['std_deviation_bounds']['lower'];
+                        delete value[k]['std_deviation_bounds'];
+                        delete value[k]['min'];
+                        delete value[k]['max'];
+                        delete value[k]['count'];
+                        var num = new Number(value[k]['avg']);
+                        value[k]['avg'] = num.toFixed(2)
+                        num = Number(value[k]['variance']);
+                        value[k]['avriance'] = num.toFixed(2)
+                        num = Number(value[k]['std_deviation']);
+                        value[k]['std_deviation'] = num.toFixed(2)
+                        num = Number(value[k]['upper']);
+                        value[k]['upper'] = num.toFixed(2)
+                        num = Number(value[k]['lower']);
+                        value[k]['lower'] = num.toFixed(2)
+                        value[k] = [value[k]];
+                    }
+                }
+            }
+        }
+    }
+    function changeResult(value, index, ar) {
+        normalized(value)
     }
     $(document).ready(function () {
         var container = $('#query-result').css('display', 'none');
@@ -538,6 +585,10 @@
                         var aggs_name = aggs[0].name;
                         var aggs_type = aggs[0].type;
                         statistic_result = resp.aggregations[aggs_name].buckets;
+
+                        format = d3.time.format("%m月%d日%H时");
+                        statistic_result.forEach(changeResult);
+
                         draw_data(statistic_result, 'source');
                     });
                 }
@@ -550,5 +601,7 @@
                 function () {
                     draw_data(statistic_result, 'table');
                 });
+
+
     });
 </script>

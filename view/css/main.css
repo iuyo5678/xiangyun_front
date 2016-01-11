@@ -20,7 +20,6 @@ body {
     background-color: #ececec;
     font-size: 18px;
     line-height: 22px;
-    min-width: 1280px;
     overflow-x: hidden;
     text-align: left;
     padding-bottom: 70px;
@@ -311,7 +310,7 @@ caption {
 
 
 .agg-table {
-    width: 100%;
+    min-width: 100%;
 }
 .agg-table tbody tr{
     height: 50px;
