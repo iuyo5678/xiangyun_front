@@ -1626,7 +1626,7 @@ function draw_pv_uv_svg_adv(start_day, end_day, svg_container, table_container, 
 
 
 function filterNone(element, index, array) {
-    return (element.key != "None");
+    return (element.key != "None" && element.key != "-");
 }
 
 function draw_map_data(start_day, end_day, map_container, qurey, size, cards) {
@@ -1821,13 +1821,6 @@ function draw_province_data(start_day, end_day, map_container, qurey, size, card
                         dataView: {show: true, readOnly: false},
                         restore: {show: true},
                         saveAsImage: {show: true}
-                    }
-                },
-                roamController: {
-                    show: true,
-                    x: 'right',
-                    mapTypeControl: {
-                        'china': true
                     }
                 },
                 series: [

@@ -57,7 +57,6 @@
 
 <div class="statistics-container">
     <h3>用户搜索区域分布统计</h3>
-
     <p class="description ">统计数值为某一地区在某个时间段内的搜索次数</p>
 
     <div id="content-top">
@@ -67,7 +66,7 @@
                 <input id="province-date-ranger" class="col-md-9">
             </div>
         </div>
-        <div id="province-container" style="height:400px"></div>
+        <div id="province-container" style="min-height:600px"></div>
     </div>
 </div>
 <div class="statistics-container">

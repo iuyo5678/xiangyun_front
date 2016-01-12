@@ -37,7 +37,8 @@
     <script src="view/js/jsoneditor/jsoneditor.min.js"></script>
 
     <!-- ECharts单文件引入 -->
-    <script src="http://echarts.baidu.com/doc/example/www2/js/echarts-all.js"></script>
+    <script src="http://echarts.baidu.com/dist/echarts.min.js"></script>
+    <script src="view/js/china.js"></script>
     <script src="view/js/json-to-table.js" type="text/javascript"></script>
 
     <link href="view/css/main.css" rel="stylesheet">
