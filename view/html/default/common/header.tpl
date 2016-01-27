@@ -29,7 +29,7 @@
     <link href="view/js/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <script src="view/js/d3/d3.min.js" type="text/javascript"></script>
     <script src="view/js/elasticsearch-js/elasticsearch.js" type="text/javascript"></script>
-    <script src="view/js/moment.js" type="text/javascript"></script>
+    <script src="view/js/moment.min.js" type="text/javascript"></script>
     <script src="view/js/md5.min.js"></script>
     <script src="view/js/daterangepicker.js" type="text/javascript"></script>
     <script src="view/js/query.js" type="text/javascript"></script>
@@ -43,6 +43,8 @@
 
     <link href="view/css/main.css" rel="stylesheet">
     <link href="view/css/daterangepicker-bs3.css" rel="stylesheet">
+    <link href="view/css/daterangepicker.css" rel="stylesheet">
+    <script src="view/js/jquery.daterangepicker.js" type="text/javascript"></script>
     <script src="view/js/common.js" type="text/javascript"></script>
     <?php foreach ($styles as $style) { ?>
     <link href="<?php echo $style['href']; ?>" type="text/css" rel="<?php echo $style['rel']; ?>" media="<?php echo $style['media']; ?>" />
@@ -87,6 +89,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="<?php echo $payment_collect; ?>">汇总</a></li>
                         <li><a href="<?php echo $payment_telecom; ?>">电信充值</a></li>
+                        <li><a href="<?php echo $payment_ofashion; ?>">ofashion</a></li>
                     </ul>
                 </li>
             </ul>

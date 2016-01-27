@@ -15,7 +15,7 @@
                                     <option value="logstash-click-search-*" selected>检索点击日志</option>
                                     <option value="logstash-disp-search-*">检索展现</option>
                                     <option value="logstash-hy-middle-*">黄页中间页</option>
-                                    <option value="logstash-bdoor-middle-*">订单分发中间页</option>
+                                    <option value="logstash-middle-bdoor-*">订单分发中间页</option>
                                     <option value="logstash-bdoor-order-*">订单分发订单信息</option>
                                 </select>
                             </div>

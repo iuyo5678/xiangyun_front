@@ -22,13 +22,146 @@ function getURLVar(key) {
     }
 }
 
+function randomString(len) {
+    len = len || 32;
+    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+    var maxPos = $chars.length;
+    var pwd = '';
+    for (i = 0; i < len; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return pwd;
+}
+
+var format = d3.time.format("%m月%d日%H时");
+function normalized(value){
+    if (value.hasOwnProperty('key_as_string')) {
+        if (value['key_as_string'].length == 29){
+            var log_date = new Date(value.key_as_string);
+            value.time = format(log_date);
+            delete value.key_as_string;
+        }
+    }
+    for (var k in value){
+        if (value.hasOwnProperty(k)) {
+            if(isObject(value[k]))
+            {
+                if(value[k].hasOwnProperty('buckets')){
+                    value[k] = value[k]['buckets'];
+                }
+                normalized(value[k])
+                if(value[k].hasOwnProperty('value')){
+                    value[k] = value[k]['value'];
+                }
+                if(value[k].hasOwnProperty('std_deviation_bounds')){
+                    value[k]['upper'] = value[k]['std_deviation_bounds']['upper'];
+                    value[k]['lower'] = value[k]['std_deviation_bounds']['lower'];
+                    delete value[k]['std_deviation_bounds'];
+                    delete value[k]['min'];
+                    delete value[k]['max'];
+                    delete value[k]['count'];
+                    var num = new Number(value[k]['avg']);
+                    value[k]['avg'] = num.toFixed(2)
+                    num = Number(value[k]['variance']);
+                    value[k]['avriance'] = num.toFixed(2)
+                    num = Number(value[k]['std_deviation']);
+                    value[k]['std_deviation'] = num.toFixed(2)
+                    num = Number(value[k]['upper']);
+                    value[k]['upper'] = num.toFixed(2)
+                    num = Number(value[k]['lower']);
+                    value[k]['lower'] = num.toFixed(2)
+                    value[k] = [value[k]];
+                }
+            }
+            else{
+                try
+                {
+                    if(String(value[k]).indexOf(".")>-1) {
+                        num = Number(value[k]);
+                        value[k] = num.toFixed(2)
+                    }
+                }
+                catch(err)
+                {
+                }
+            }
+        }
+    }
+}
+function changeResult(value, index, ar) {
+    normalized(value)
+}
+
+
+function produceChartOption(source_data, option){
+    if(option['type'] == 'gridchart'){
+        chartOption = {
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            legend: {
+                data:[]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    data : []
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : []
+        };
+        for (var j=0; j<option['yaxis'].length; j ++){
+            chartOption['legend']['data'].push(option['yaxis'][j]['name']);
+            serie = {};
+            serie['name'] = option['yaxis'][j]['name'];
+            serie['type'] = 'bar';
+            serie['data'] = []
+            for(var m= 0; m<source_data.length; m++){
+                serie['data'].push(source_data[m][option['yaxis'][j]['source']]);
+            }
+            chartOption['series'].push(serie);
+        }
+        xaxis_source = option['xaxis']['source'];
+        for(var m= 0; m<source_data.length; m++){
+            chartOption['xAxis'][0]['data'].push(source_data[m][xaxis_source]);
+        }
+
+        return chartOption;
+
+    } else if (option['type'] == 'linechart') {
+
+    }
+}
 
 /*
  * 检测对象是否是空对象(不包含任何可读属性)。
  * 方法既检测对象本身的属性，也检测从原型继承的属性(因此没有使hasOwnProperty)。
  */
-function isEmpty(obj)
-{
+function isEmpty(obj) {
     for (var name in obj)
     {
         return false;
@@ -266,7 +399,6 @@ var getFnName = function (callee) {
     }
     return "anonymous"
 };
-
 
 function get_all_parameters(log_source, log_type) {
     var elc_client = new elasticsearch.Client({hosts: data_server});
@@ -1224,7 +1356,6 @@ function draw_only_pv_uv_svg(start_day, end_day, svg_container, table_container,
 
 }
 
-
 function draw_pv_uv_svg_adv(start_day, end_day, svg_container, table_container, query, interval, cards) {
     var key = md5([getFnName(arguments.callee), end_day, svg_container, table_container, query, interval, cards].join("$$$"));
     var value = null;
@@ -1624,7 +1755,6 @@ function draw_pv_uv_svg_adv(start_day, end_day, svg_container, table_container, 
     });
 }
 
-
 function filterNone(element, index, array) {
     return (element.key != "None" && element.key != "-");
 }
@@ -1840,7 +1970,6 @@ function draw_province_data(start_day, end_day, map_container, qurey, size, card
             map_chart.setOption(option);
         });
 }
-
 
 function draw_click_svg(start_day, end_day, svg_container, table_container, qurey, interval, cards) {
     var start_time_stamp = start_day || DateAdd("d ", -17, setStartDay(new Date())).getTime();
@@ -2301,4 +2430,79 @@ function get_log_statistics(log_source, start_time, end_time, query) {
     });
 
     return esp
+}
+
+function draw_result_data(data, result_container, draw_type, draw_args){
+    var tag = randomString(6);
+    $(result_container).empty();
+    draw_args = draw_args || {};
+    $(result_container).append('<ul id="instraction-tab" class="nav nav-tabs"></ul><div id="chart-container" class="tab-content"></div>');
+    var draw_type_list = draw_type.split("#")
+    for (var i=0;i<draw_type_list.length;i++)
+    {
+        if (draw_type_list[i] == 'source'){
+            if(i == 0){
+                $(result_container).children("#instraction-tab").append('<li class="active"><a href="#source' + tag + '" data-toggle="tab">原始结果</a></li>');
+                $(result_container).children("#chart-container").append('<div class="editor tab-pane fade active in" id="source' + tag + '"></div>');
+            }else{
+                $(result_container).children("#instraction-tab").append('<li><a href="#source' + tag + '" data-toggle="tab">原始结果</a></li>');
+                $(result_container).children("#chart-container").append('<div class="editor tab-pane fade" id="source' + tag + '"></div>');
+            }
+
+
+            var el = $(result_container).children("#chart-container").children('#source');
+            var editor = ace.edit(el[0]);
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode("ace/mode/json");
+            editor.setValue(JSON.stringify(data, null, '\t'));
+
+        }else if (draw_type_list[i] == 'table'){
+            if(i == 0){
+                $(result_container).children("#instraction-tab").append('<li class="active"><a href="#table' + tag + '" data-toggle="tab">表格</a></li>');
+                $(result_container).children("#chart-container").append('<div class="editor tab-pane fade active in" id="table' + tag + '"></div>')
+            }else{
+                $(result_container).children("#instraction-tab").append('<li><a href="#table' + tag + '" data-toggle="tab">表格</a></li>');
+                $(result_container).children("#chart-container").append('<div class="editor tab-pane fade" id="table' + tag + '"></div>')
+            }
+            d3.select(result_container).select("#chart-container").select('#table'+tag)
+                .selectAll("table")
+                .data([data])
+                .enter().append("table")
+                .attr('class', 'result-table')
+                .call(recurse);
+        }else if (draw_type_list[i] == 'gridchart'){
+            if(i == 0){
+                $(result_container).children("#instraction-tab").append('<li class="active"><a href="#gridchart' + tag + '" data-toggle="tab">柱状图</a></li>');
+                $(result_container).children("#chart-container").append('<div class="editor tab-pane fade active in" id="gridchart' + tag + '"></div>');
+            }else{
+                $(result_container).children("#instraction-tab").append('<li><a href="#gridchart' + tag + '" data-toggle="tab">柱状图</a></li>');
+                $(result_container).children("#chart-container").append('<div class="editor tab-pane fade" id="gridchart' + tag + '"></div>');
+            }
+
+            var el = $(result_container).children("#chart-container").children('#gridchart'+tag);
+            var map_chart = echarts.init(el[0]);
+            map_chart.setOption(draw_args);
+            map_chart.resize();
+            window.onresize = map_chart.resize
+        }else {
+
+        }
+    }
+
+}
+
+function draw_result(start_time, end_time, log_source, query, statistics, aggs, draw_option, container, draw_type)
+{
+    var elas_query = build_query(start_time, end_time, query, statistics, aggs);
+
+    var middle_log_data = get_log_statistics(log_source, start_time, end_time, elas_query);
+    middle_log_data.then(function (resp) {
+        var aggs_name = aggs[0].name;
+        var aggs_type = aggs[0].type;
+        var statistic_result = resp.aggregations[aggs_name].buckets;
+        statistic_result.forEach(changeResult);
+        var option = produceChartOption(statistic_result, draw_option)
+        draw_result_data(statistic_result, container, draw_type, option);
+    });
+
 }

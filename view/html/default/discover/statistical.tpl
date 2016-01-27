@@ -314,7 +314,7 @@
                 '<option value="min">最小值</option>' +
                 '<option value="max">最大值</option>' +
                 '<option value="extended_stats">标准差</option>' +
-                '<option value="unique_count">去重计数</option></select></div>' +
+                '<option value="cardinality">去重计数</option></select></div>' +
                 '<div class="col-md-6 input-form" id="statistic-filed-input' + statistics_row + '" style="display: none">' +
                 '<label class="col-md-3 input-label" for="statistic-field' + statistics_row + '">选择字段:</label>' +
                 '<select class="col-md-8 input-value field-select" type="number" id="statistic-field' + statistics_row + '">' +
@@ -412,72 +412,40 @@
         }
         $('#query-result').css('display', 'block');
 
+    }
 
-    }
-    function normalized(value){
-        if (value.hasOwnProperty('key_as_string')) {
-            if (value['key_as_string'].length == 29){
-            var log_date = new Date(value.key_as_string);
-            value.time = format(log_date);
-            delete value.key_as_string;
-            }
-        }
-        for (var k in value){
-            if (value.hasOwnProperty(k)) {
-                if(isObject(value[k]))
-                {
-                    if(value[k].hasOwnProperty('buckets')){
-                        value[k] = value[k]['buckets'];
-                    }
-                    normalized(value[k])
-                    if(value[k].hasOwnProperty('value')){
-                        value[k] = value[k]['value'];
-                    }
-                    if(value[k].hasOwnProperty('std_deviation_bounds')){
-                        value[k]['upper'] = value[k]['std_deviation_bounds']['upper'];
-                        value[k]['lower'] = value[k]['std_deviation_bounds']['lower'];
-                        delete value[k]['std_deviation_bounds'];
-                        delete value[k]['min'];
-                        delete value[k]['max'];
-                        delete value[k]['count'];
-                        var num = new Number(value[k]['avg']);
-                        value[k]['avg'] = num.toFixed(2)
-                        num = Number(value[k]['variance']);
-                        value[k]['avriance'] = num.toFixed(2)
-                        num = Number(value[k]['std_deviation']);
-                        value[k]['std_deviation'] = num.toFixed(2)
-                        num = Number(value[k]['upper']);
-                        value[k]['upper'] = num.toFixed(2)
-                        num = Number(value[k]['lower']);
-                        value[k]['lower'] = num.toFixed(2)
-                        value[k] = [value[k]];
-                    }
-                }
-            }
-        }
-    }
-    function changeResult(value, index, ar) {
-        normalized(value)
-    }
     $(document).ready(function () {
         var container = $('#query-result').css('display', 'none');
         var start_time = DateAdd("d ", -17, setStartDay(new Date()));
         var end_time = DateAdd("d ", -2, setEndDay(new Date()));
-        var date_ranger = $('#log-date-ranger');
-        date_ranger.attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
 
-        date_ranger.daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    startDate: start_time,
+        $('#log-date-ranger').dateRangePicker(
+                {
+                    language:'cn',
+                    startOfWeek: 'monday',
+                    separator: ' ~ ',
+                    format: 'YYYY.MM.DD HH:mm:ss',
+                    time: {
+                        enabled: true
+                    },
+                    lookBehind: true,
                     endDate: end_time,
-                    format: 'YYYY-MM-DD hh:mm:ss'
-                },
-                function (start, end, label) {
-                    start_time = start;
-                    end_time = end;
+                    showShortcuts: true,
+                    shortcuts: {
+                        'prev-days': [3, 5, 7],
+                        'prev': ['week', 'month', 'year'],
+                        'next-days': null,
+                        'next': null
+                    }
                 }
-        );
+        ).bind('datepicker-change',function(event,obj)
+        {
+            start_time = obj.date1;
+            end_time = obj.date2;
+        });
+
+        $('#log-date-ranger').data('dateRangePicker')
+                .setDateRange(start_time, end_time);
 
         var field_id = '#aggs-field0';
         var log_source = $("#log-source").val();

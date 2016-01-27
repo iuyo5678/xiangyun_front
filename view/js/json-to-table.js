@@ -99,7 +99,7 @@ function recurse(sel) {
             .enter().append("tr").selectAll("td")
             .data(function(d) {                 // each cell gets one value
                 return colnames.map(function(k) { // for each colname (i.e. key) find the corresponding value
-                    return d[k] || "";              // use empty string if key doesn't exist for that object
+                    return d[k];              // use empty string if key doesn't exist for that object
                 });
             })
             .enter().append("td");
@@ -188,6 +188,4 @@ jQuery.fn.table2CSV = function(options) {
         generator.document.close();
         return true;
     }
-
-
 };

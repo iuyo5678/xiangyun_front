@@ -2,6 +2,13 @@
  * Created by zhangguhua on 15/12/7.
  */
 
+
+function build_chart_param(char_type, option){
+    if (char_type == 'gridchat'){
+
+    }
+}
+
 function build_query(start_time, end_time, query_str, statistics, aggs) {
     query_str = query_str || '*';
 

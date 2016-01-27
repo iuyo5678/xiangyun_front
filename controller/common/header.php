@@ -43,6 +43,7 @@ class ControllerCommonHeader extends Controller {
 		$data['bdoor_jiazhuang'] = $this->url->link('bdoor/jiazhuang');
 
 		$data['payment_collect'] = $this->url->link('payment/collect');
+		$data['payment_ofashion'] = $this->url->link('payment/ofashion');
 		$data['payment_telecom'] = $this->url->link('payment/telecom');
 
 		$data['discover_keys'] = $this->url->link('discover/keys');
