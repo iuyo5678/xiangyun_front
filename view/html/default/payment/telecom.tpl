@@ -71,20 +71,68 @@
         all_cards = ['wz_pinpai'];
         var start_time = DateAdd("d ", -17, setStartDay(new Date()));
         var end_time= DateAdd("d ", -2, setEndDay(new Date()));
+
         var checkValue = $("#collect-interval").val();
-        $('#collect-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
-        $('#collect-date-ranger').daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    startDate: start_time,
+
+        $('#collect-date-ranger').dateRangePicker(
+                {
+                    language:'cn',
+                    startOfWeek: 'monday',
+                    separator: ' ~ ',
+                    format: 'YYYY.MM.DD HH:mm:ss',
+                    time: {
+                        enabled: true
+                    },
+                    lookBehind: true,
                     endDate: end_time,
-                    format: 'YYYY-MM-DD hh:mm:ss'
-                },
-                function (start, end, label) {
-                    start_time = start;
-                    end_time = end;
-                    draw_only_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", 'disp_detail.disp_result_type:wz_pinpai AND disp_detail.url:*6128913*', checkValue);
-                });
+                    showShortcuts: true,
+                    shortcuts: {
+                        'prev-days': [3, 5, 7],
+                        'prev': ['week', 'month', 'year'],
+                        'next-days': null,
+                        'next': null
+                    }
+                }
+        ).bind('datepicker-change',function(event,obj)
+        {
+            start_time = obj.date1;
+            end_time = obj.date2;
+            draw_only_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", 'disp_detail.disp_result_type:wz_pinpai AND disp_detail.url:*6128913*', checkValue);
+
+
+        });
+        $('#collect-date-ranger').data('dateRangePicker')
+                .setDateRange(start_time, end_time);
+
+        $('#click-date-ranger').dateRangePicker(
+                {
+                    language:'cn',
+                    startOfWeek: 'monday',
+                    separator: ' ~ ',
+                    format: 'YYYY.MM.DD HH:mm:ss',
+                    time: {
+                        enabled: true
+                    },
+                    lookBehind: true,
+                    endDate: end_time,
+                    showShortcuts: true,
+                    shortcuts: {
+                        'prev-days': [3, 5, 7],
+                        'prev': ['week', 'month', 'year'],
+                        'next-days': null,
+                        'next': null
+                    }
+                }
+        ).bind('datepicker-change',function(event,obj)
+        {
+            start_time = obj.date1;
+            end_time = obj.date2;
+            draw_only_click_svg(start_time, end_time, "#click-visul", "#click-table-tab", 'clk_detail.aladdin_source_id:wz_pinpai AND clk_detail.clk_url:*e.189.cn*', clickCheckValue);
+
+        });
+        $('#click-date-ranger').data('dateRangePicker')
+                .setDateRange(start_time, end_time);
+
         $("#collect-interval").change(
                 function(){
                     checkValue = $("#collect-interval").val();
@@ -94,19 +142,6 @@
         draw_only_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", 'disp_detail.disp_result_type:wz_pinpai AND disp_detail.url:*6128913*', checkValue, all_cards);
 
         var clickCheckValue = $("#click-interval").val();
-        $('#click-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
-        $('#click-date-ranger').daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    startDate: start_time,
-                    endDate: end_time,
-                    format: 'YYYY-MM-DD hh:mm:ss'
-                },
-                function (start, end, label) {
-                    start_time = start;
-                    end_time = end;
-                    draw_only_click_svg(start_time, end_time, "#click-visul", "#click-table-tab", 'clk_detail.aladdin_source_id:wz_pinpai AND clk_detail.clk_url:*e.189.cn*', clickCheckValue);
-                });
         $("#collect-interval").change(
                 function(){
                     checkValue = $("#collect-interval").val();

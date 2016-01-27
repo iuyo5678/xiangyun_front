@@ -47,19 +47,36 @@
         var gmv_start_time = DateAdd("d ", -17, setStartDay(new Date()));
         var gmv_end_time = DateAdd("d ", -2, setEndDay(new Date()));
         var gmv_checkValue = $("#gmv-interval").val();
-        $('#gmv-date-ranger').attr("value", gmv_start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + gmv_end_time.Format("yyyy-MM-dd HH:mm:ss"));
-        $('#gmv-date-ranger').daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    startDate: gmv_start_time,
-                    endDate: gmv_end_time,
-                    format: 'YYYY-MM-DD hh:mm:ss'
-                },
-                function (start, end, label) {
-                    gmv_start_time = start;
-                    gmv_end_time = end;
+
+        $('#gmv-date-ranger').dateRangePicker(
+                {
+                    language:'cn',
+                    startOfWeek: 'monday',
+                    separator: ' ~ ',
+                    format: 'YYYY.MM.DD HH:mm:ss',
+                    time: {
+                        enabled: true
+                    },
+                    lookBehind: true,
+                    endDate: end_time,
+                    showShortcuts: true,
+                    shortcuts: {
+                        'prev-days': [3, 5, 7],
+                        'prev': ['week', 'month', 'year'],
+                        'next-days': null,
+                        'next': null
+                    }
                 }
-        );
+        ).bind('datepicker-change',function(event,obj)
+        {
+            gmv_start_time = obj.date1;
+            gmv_end_time = obj.date2;
+
+        });
+        $('#gmv-date-ranger').data('dateRangePicker')
+                .setDateRange(gmv_start_time, gmv_end_time);
+
+
         $("#gmv-interval").change(
                 function () {
                     gmv_checkValue = $("#gmv-interval").val();

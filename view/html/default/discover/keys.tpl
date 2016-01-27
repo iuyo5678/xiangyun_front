@@ -53,20 +53,34 @@
 
         var key_checkValue = $("#key-interval").val();
 
-        $('#key-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
-
-        $('#key-date-ranger').daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    startDate: start_time,
+        $('#key-date-ranger').dateRangePicker(
+                {
+                    language:'cn',
+                    startOfWeek: 'monday',
+                    separator: ' ~ ',
+                    format: 'YYYY.MM.DD HH:mm:ss',
+                    time: {
+                        enabled: true
+                    },
+                    lookBehind: true,
                     endDate: end_time,
-                    format: 'YYYY-MM-DD hh:mm:ss'
-                },
-                function (start, end, label) {
-                    start_time = start;
-                    end_time = end;
+                    showShortcuts: true,
+                    shortcuts: {
+                        'prev-days': [3, 5, 7],
+                        'prev': ['week', 'month', 'year'],
+                        'next-days': null,
+                        'next': null
+                    }
                 }
-        );
+        ).bind('datepicker-change',function(event,obj)
+        {
+            start_time = obj.date1;
+            end_time = obj.date2;
+
+        });
+        $('#key-date-ranger').data('dateRangePicker')
+                .setDateRange(start_time, end_time);
+
         $("#click-point-search").click(
                 function () {
                     var query = $("#key-value").val();

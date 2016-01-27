@@ -37,19 +37,36 @@
                         var start_time = DateAdd("d ", -17, setStartDay(new Date()));
                         var end_time= DateAdd("d ", -2, setEndDay(new Date()));
                         var checkValue = $("#collect-interval").val();
-                        $('#collect-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
-                        $('#collect-date-ranger').daterangepicker({
-                                    timePicker: true,
-                                    timePickerIncrement: 30,
-                                    startDate: start_time,
+
+                        $('#collect-date-ranger').dateRangePicker(
+                                {
+                                    language:'cn',
+                                    startOfWeek: 'monday',
+                                    separator: ' ~ ',
+                                    format: 'YYYY.MM.DD HH:mm:ss',
+                                    time: {
+                                        enabled: true
+                                    },
+                                    lookBehind: true,
                                     endDate: end_time,
-                                    format: 'YYYY-MM-DD hh:mm:ss'
-                                },
-                                function (start, end, label) {
-                                    start_time = start;
-                                    end_time = end;
-                                    draw_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue);
-                                });
+                                    showShortcuts: true,
+                                    shortcuts: {
+                                        'prev-days': [3, 5, 7],
+                                        'prev': ['week', 'month', 'year'],
+                                        'next-days': null,
+                                        'next': null
+                                    }
+                                }
+                        ).bind('datepicker-change',function(event,obj)
+                        {
+                            start_time = obj.date1;
+                            end_time = obj.date2;
+                            draw_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue);
+
+                        });
+                        $('#collect-date-ranger').data('dateRangePicker')
+                                .setDateRange(start_time, end_time);
+
                         $("#collect-interval").change(
                                 function(){
                                     checkValue = $("#collect-interval").val();

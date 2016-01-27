@@ -245,6 +245,8 @@
             draw_result(start_time, end_time, click_log_source, click_query, click_statistics, aggs, click_draw_option, '#click-result-container', "gridchart#table")
 
         });
+        $('#click-date-ranger').data('dateRangePicker')
+                .setDateRange(start_time, end_time);
         $("#click-interval").change(
                 function () {
                     aggs[0]['interval'] = $("#collect-interval").val();
