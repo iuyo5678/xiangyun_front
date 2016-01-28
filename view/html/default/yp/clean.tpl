@@ -137,73 +137,152 @@
         var query_raw_checkValue = $("#query-raw-top").val();
         var query_checkValue = $("#query-top").val();
 
-        $('#collect-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
-        $('#area-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
-        $('#query-raw-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
-        $('#query-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
-        $('#province-date-ranger').attr("value", start_time.Format("yyyy-MM-dd HH:mm:ss") + " - " + end_time.Format("yyyy-MM-dd HH:mm:ss"));
+
+        $('#collect-date-ranger').dateRangePicker(
+                {
+                    language:'cn',
+                    startOfWeek: 'monday',
+                    separator: ' ~ ',
+                    format: 'YYYY.MM.DD HH:mm:ss',
+                    time: {
+                        enabled: true
+                    },
+                    lookBehind: true,
+                    endDate: end_time,
+                    showShortcuts: true,
+                    shortcuts: {
+                        'prev-days': [3, 5, 7],
+                        'prev': ['week', 'month', 'year'],
+                        'next-days': null,
+                        'next': null
+                    }
+                }
+        ).bind('datepicker-change',function(event,obj)
+        {
+            start_time = obj.date1;
+            end_time = obj.date2;
+            draw_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue, all_cards);
 
 
-        $('#collect-date-ranger').daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    startDate: start_time,
+        });
+        $('#collect-date-ranger').data('dateRangePicker').setDateRange(start_time, end_time);
+
+        $('#area-date-ranger').dateRangePicker(
+                {
+                    language:'cn',
+                    startOfWeek: 'monday',
+                    separator: ' ~ ',
+                    format: 'YYYY.MM.DD HH:mm:ss',
+                    time: {
+                        enabled: true
+                    },
+                    lookBehind: true,
                     endDate: end_time,
-                    format: 'YYYY-MM-DD hh:mm:ss'
-                },
-                function (start, end, label) {
-                    start_time = start;
-                    end_time = end;
-                    draw_pv_uv_svg(start_time, end_time, "#collect-visul", "#collect-table-tab", '*', checkValue);
-                });
-        $('#area-date-ranger').daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    startDate: start_time,
+                    showShortcuts: true,
+                    shortcuts: {
+                        'prev-days': [3, 5, 7],
+                        'prev': ['week', 'month', 'year'],
+                        'next-days': null,
+                        'next': null
+                    }
+                }
+        ).bind('datepicker-change',function(event,obj)
+        {
+            start_time = obj.date1;
+            end_time = obj.date2;
+            draw_map_data(start_time, end_time, "map_container", "*", area_checkValue, all_cards);
+
+
+        });
+        $('#area-date-ranger').data('dateRangePicker').setDateRange(start_time, end_time);
+
+
+        $('#query-raw-date-ranger').dateRangePicker(
+                {
+                    language:'cn',
+                    startOfWeek: 'monday',
+                    separator: ' ~ ',
+                    format: 'YYYY.MM.DD HH:mm:ss',
+                    time: {
+                        enabled: true
+                    },
+                    lookBehind: true,
                     endDate: end_time,
-                    format: 'YYYY-MM-DD hh:mm:ss'
-                },
-                function (start, end, label) {
-                    start_time = start;
-                    end_time = end;
-                    draw_map_data(start_time, end_time, "map_container", "*", area_checkValue, all_cards);
-                });
-        $('#query-raw-date-ranger').daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    startDate: start_time,
+                    showShortcuts: true,
+                    shortcuts: {
+                        'prev-days': [3, 5, 7],
+                        'prev': ['week', 'month', 'year'],
+                        'next-days': null,
+                        'next': null
+                    }
+                }
+        ).bind('datepicker-change',function(event,obj)
+        {
+            start_time = obj.date1;
+            end_time = obj.date2;
+            draw_raw_query_data(start_time, end_time, "query-raw-container", "*", query_raw_checkValue, all_cards, "original_query.raw");
+
+        });
+        $('#query-raw-date-ranger').data('dateRangePicker').setDateRange(start_time, end_time);
+
+
+        $('#query-date-ranger').dateRangePicker(
+                {
+                    language:'cn',
+                    startOfWeek: 'monday',
+                    separator: ' ~ ',
+                    format: 'YYYY.MM.DD HH:mm:ss',
+                    time: {
+                        enabled: true
+                    },
+                    lookBehind: true,
                     endDate: end_time,
-                    format: 'YYYY-MM-DD hh:mm:ss'
-                },
-                function (start, end, label) {
-                    start_time = start;
-                    end_time = end;
-                    draw_raw_query_data(start_time, end_time, "query-raw-container", "*", query_raw_checkValue, all_cards, "original_query.raw");
-                });
-        $('#query-date-ranger').daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    startDate: start_time,
+                    showShortcuts: true,
+                    shortcuts: {
+                        'prev-days': [3, 5, 7],
+                        'prev': ['week', 'month', 'year'],
+                        'next-days': null,
+                        'next': null
+                    }
+                }
+        ).bind('datepicker-change',function(event,obj)
+        {
+            start_time = obj.date1;
+            end_time = obj.date2;
+            draw_map_data(start_time, end_time, "map_container", "*", area_checkValue, all_cards);
+            draw_raw_query_data(start_time, end_time, "query-raw-container", "*", query_raw_checkValue, all_cards, "original_query.raw");
+
+
+        });
+        $('#query-date-ranger').data('dateRangePicker').setDateRange(start_time, end_time);
+
+        $('#province-date-ranger').dateRangePicker(
+                {
+                    language:'cn',
+                    startOfWeek: 'monday',
+                    separator: ' ~ ',
+                    format: 'YYYY.MM.DD HH:mm:ss',
+                    time: {
+                        enabled: true
+                    },
+                    lookBehind: true,
                     endDate: end_time,
-                    format: 'YYYY-MM-DD hh:mm:ss'
-                },
-                function (start, end, label) {
-                    start_time = start;
-                    end_time = end;
-                    draw_raw_query_data(start_time, end_time, "query-container", "*", query_checkValue, all_cards, "original_query");
-                });
-        $('#province-date-ranger').daterangepicker({
-                    timePicker: true,
-                    timePickerIncrement: 30,
-                    startDate: start_time,
-                    endDate: end_time,
-                    format: 'YYYY-MM-DD hh:mm:ss'
-                },
-                function (start, end, label) {
-                    start_time = start;
-                    end_time = end;
-                    draw_province_data(start_time, end_time, "province-container", "*", 50, all_cards, "original_query");
-                });
+                    showShortcuts: true,
+                    shortcuts: {
+                        'prev-days': [3, 5, 7],
+                        'prev': ['week', 'month', 'year'],
+                        'next-days': null,
+                        'next': null
+                    }
+                }
+        ).bind('datepicker-change',function(event,obj)
+        {
+            start_time = obj.date1;
+            end_time = obj.date2;
+            draw_province_data(start_time, end_time, "province-container", "*", 50, all_cards, "original_query");
+        });
+        $('#province-date-ranger').data('dateRangePicker').setDateRange(start_time, end_time);
+
 
 
         $("#collect-interval").change(

@@ -373,7 +373,6 @@
                 select_con.append($("<option>").attr('value', result[item]).text(result[item]));
             }
         });
-
         aggs_row++;
     }
 

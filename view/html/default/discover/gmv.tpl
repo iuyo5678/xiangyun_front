@@ -58,7 +58,7 @@
                         enabled: true
                     },
                     lookBehind: true,
-                    endDate: end_time,
+                    endDate: gmv_end_time,
                     showShortcuts: true,
                     shortcuts: {
                         'prev-days': [3, 5, 7],

@@ -68,7 +68,23 @@ function build_query(start_time, end_time, query_str, statistics, aggs) {
                         "min_doc_count": 0,
                 }
             }
-        }else{
+        }else if(aggs[index-1].type == "terms"){
+            aggs_temp[aggs_name] = {};
+            aggs_temp[aggs_name][aggs_type] = {};
+            aggs_temp[aggs_name][aggs_type]['field'] = aggs[index-1].field;
+            if(aggs[index-1].hasOwnProperty('size')){
+                aggs_temp[aggs_name][aggs_type]['size'] = aggs[index-1].size;
+            }else{
+                aggs_temp[aggs_name][aggs_type]['size'] = 30;
+            }
+            if(aggs[index-1].hasOwnProperty('order')){
+                aggs_temp[aggs_name][aggs_type]['order'] = aggs[index-1].order;
+            }else{
+                aggs_temp[aggs_name][aggs_type]['order'] = {"_count": "desc"};
+            }
+
+
+        } else{
             aggs_temp[aggs_name] = {};
             aggs_temp[aggs_name][aggs_type] = {};
             aggs_temp[aggs_name][aggs_type]['field'] = aggs[index-1].field;
