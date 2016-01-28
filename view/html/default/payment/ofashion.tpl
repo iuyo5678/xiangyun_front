@@ -257,21 +257,21 @@
                 function () {
                     var collect_type = $("#click-type").val();
                     if (collect_type=='all'){
-                        query = "clk_detail.aladdin_source_id:wz_ofashion_*";
+                        click_query = "clk_detail.aladdin_source_id:wz_ofashion_*";
                     } else if(collect_type=='gen-all'){
-                        query = "clk_detail.aladdin_source_id:wz_ofashion_genericity";
+                        click_query = "clk_detail.aladdin_source_id:wz_ofashion_genericity";
                     } else if(collect_type=="per-all"){
-                        query = "clk_detail.aladdin_source_id:wz_ofashion_precise";
+                        click_query = "clk_detail.aladdin_source_id:wz_ofashion_precise";
                     } else if(collect_type=="gen-6169047"){
-                        query = "clk_detail.aladdin_source_id:wz_ofashion_genericity AND clk_detail.action_attribute.event_url:*6169047* ";
+                        click_query = "clk_detail.aladdin_source_id:wz_ofashion_genericity AND clk_detail.action_attribute.event_url:*6169047* ";
                     } else if(collect_type == "gen-6901752"){
-                        query = "clk_detail.aladdin_source_id:wz_ofashion_genericity AND clk_detail.action_attribute.event_url:*6901752*";
+                        click_query = "clk_detail.aladdin_source_id:wz_ofashion_genericity AND clk_detail.action_attribute.event_url:*6901752*";
                     } else if(collect_type=="per-6169047"){
-                        query = "clk_detail.aladdin_source_id:wz_ofashion_precise AND clk_detail.action_attribute.event_url:*6169047*";
+                        click_query = "clk_detail.aladdin_source_id:wz_ofashion_precise AND clk_detail.action_attribute.event_url:*6169047*";
                     } else if(collect_type=="per-6901752"){
-                        query = "clk_detail.aladdin_source_id:wz_ofashion_precise AND clk_detail.action_attribute.event_url:*6901752*";
+                        click_query = "clk_detail.aladdin_source_id:wz_ofashion_precise AND clk_detail.action_attribute.event_url:*6901752*";
                     }else{
-                        query = "clk_detail.aladdin_source_id:wz_ofashion_*";
+                        click_query = "clk_detail.aladdin_source_id:wz_ofashion_*";
                     }
                     draw_result(start_time, end_time, click_log_source, click_query, click_statistics, aggs, click_draw_option, '#click-result-container', "gridchart#table")
                 }
